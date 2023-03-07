@@ -23,7 +23,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "importsNotUsedAsValues": "error",
     "incremental": true,
     "sourceMap": true
   },
