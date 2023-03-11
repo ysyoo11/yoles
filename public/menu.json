@@ -1,0 +1,160 @@
+[
+  {
+    "title": "Meat & Seafood",
+    "image": {
+      "src": "/image/category/meat-seafood.png",
+      "alt": "meat-seafood"
+    },
+    "list": [
+      {
+        "title": "Beef & Veal",
+        "href": "/beef-veal"
+      },
+      {
+        "title": "Lamb",
+        "href": "/lamb"
+      },
+      {
+        "title": "Pork",
+        "href": "/pork"
+      },
+      {
+        "title": "Poultry",
+        "href": "/poultry"
+      },
+      {
+        "title": "Seafood",
+        "href": "/seafood"
+      }
+    ]
+  },
+  {
+    "title": "Fruit & Vegetables",
+    "image": {
+      "src": "/image/category/fruit-vegetables.png",
+      "alt": "fruit-vegetables"
+    },
+    "list": [
+      {
+        "title": "Fruit",
+        "href": "/fruit"
+      },
+      {
+        "title": "Nuts & Dried Fruit",
+        "href": "/nuts-dried-fruit"
+      },
+      {
+        "title": "Salad & Herbs",
+        "href": "/salad-herbs"
+      },
+      {
+        "title": "Vegetables",
+        "href": "/vegetables"
+      }
+    ]
+  },
+  {
+    "title": "Dairy, eggs & Fridge",
+    "image": {
+      "src": "/image/category/dairy-eggs-fridge.png",
+      "alt": "dairy-eggs-fridge"
+    },
+    "list": [
+      {
+        "title": "Cheese",
+        "href": "/cheese"
+      },
+      {
+        "title": "Dairy",
+        "href": "/dairy"
+      },
+      {
+        "title": "Eggs",
+        "href": "/eggs"
+      },
+      {
+        "title": "Milk",
+        "href": "/milk"
+      },
+      {
+        "title": "Vegetarian & Vegan",
+        "href": "/vegetarian-vegan"
+      }
+    ]
+  },
+  {
+    "title": "Bakery",
+    "image": {
+      "src": "/image/category/bakery.png",
+      "alt": "bakery"
+    },
+    "list": [
+      {
+        "title": "Cakes & Desserts",
+        "href": "/cakes-desserts"
+      },
+      {
+        "title": "Hot Cross Buns",
+        "href": "/hot-cross-buns"
+      },
+      {
+        "title": "Packaged Breads",
+        "href": "/packaged-breads"
+      },
+      {
+        "title": "Gluten Free Range",
+        "href": "/gluten-free-range"
+      },
+      {
+        "title": "Vegan Range",
+        "href": "/vegan-range"
+      }
+    ]
+  },
+  {
+    "title": "Drinks",
+    "image": {
+      "src": "/image/category/drinks.png",
+      "alt": "drinks"
+    },
+    "list": [
+      {
+        "title": "Coffee Drinks",
+        "href": "/coffee-drinks"
+      },
+      {
+        "title": "Cold Drinks",
+        "href": "/cold-drinks"
+      },
+      {
+        "title": "Engergy Drinks",
+        "href": "/energy-drinks"
+      },
+      {
+        "title": "Juice",
+        "href": "/juice"
+      },
+      {
+        "title": "Water",
+        "href": "/water"
+      }
+    ]
+  },
+  {
+    "title": "Frozen",
+    "image": {
+      "src": "/image/category/frozen.png",
+      "alt": "frozen"
+    },
+    "list": [
+      {
+        "title": "Frozen Fruit",
+        "href": "/frozen-fruit"
+      },
+      {
+        "title": "Frozen Meals",
+        "href": "/frozen-meals"
+      }
+    ]
+  }
+]
