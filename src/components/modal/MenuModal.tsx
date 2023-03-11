@@ -56,6 +56,7 @@ export default function MenuModal({ isOpen, onClose }: Props) {
                           title={item.title}
                           image={{ src: item.image.src, alt: item.image.alt }}
                           list={item.list}
+                          onClick={onClose}
                         />
                       </li>
                     ))}

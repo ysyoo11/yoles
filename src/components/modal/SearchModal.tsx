@@ -33,7 +33,10 @@ export default function SearchModal({ isOpen, onClose }: Props) {
                     <li key={`search-history-${idx}`}>
                       <button
                         className='flex h-full w-full items-center space-x-4 rounded border border-transparent px-4 py-2 hover:border-gray-800 hover:underline'
-                        onClick={() => router.push(`/products?q=${item}`)}
+                        onClick={() => {
+                          router.push(`/products?q=${item}`);
+                          onClose();
+                        }}
                       >
                         <MagnifyingGlassIcon className='h-4 w-4 stroke-[3px]' />
                         <span className='text-sm text-gray-700'>{item}</span>

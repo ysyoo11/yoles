@@ -13,9 +13,10 @@ interface Props {
     title: string;
     href: string;
   }[];
+  onClick: () => void;
 }
 
-export default function MenuDetails({ title, image, list }: Props) {
+export default function MenuDetails({ title, image, list, onClick }: Props) {
   return (
     <Disclosure>
       {({ open }) => (
@@ -38,9 +39,19 @@ export default function MenuDetails({ title, image, list }: Props) {
           </Disclosure.Button>
           <Disclosure.Panel className='py-2 text-sm text-gray-700'>
             <ul>
+              <li>
+                <Link href={`/products/${image.alt}`} onClick={onClick}>
+                  <div className='h-full w-full rounded-lg py-4 pl-16 hover:bg-gray-100 hover:underline'>
+                    All {title}
+                  </div>
+                </Link>
+              </li>
               {list.map((item, idx) => (
                 <li key={`item-${idx}-${item.title}`}>
-                  <Link href={`${item.href}`}>
+                  <Link
+                    href={`/products/${image.alt}${item.href}`}
+                    onClick={onClick}
+                  >
                     <div className='h-full w-full rounded-lg py-4 pl-16 hover:bg-gray-100 hover:underline'>
                       {item.title}
                     </div>
