@@ -5,7 +5,7 @@ import { YolesProvider } from '@/components/yoles-context';
 import type { AppProps } from 'next/app';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const Layout = (Component as any).Layout || BaseLayout;
+  const Layout = (Component as any).layout || BaseLayout;
 
   return (
     <YolesProvider>
