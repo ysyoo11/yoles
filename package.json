@@ -14,6 +14,7 @@
     "clsx": "^1.2.1",
     "cookie": "^0.5.0",
     "got": "12.6",
+    "keen-slider": "6.8.5",
     "ky": "0.33.2",
     "lodash": "4.17.21",
     "lodash.debounce": "^4.0.8",
