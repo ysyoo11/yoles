@@ -13,7 +13,7 @@ interface Props {
 export default function MenuModal({ isOpen, onClose }: Props) {
   return (
     <Transition show={isOpen} as={Fragment}>
-      <Dialog as='div' className='relative z-10' onClose={onClose}>
+      <Dialog as='div' className='relative z-[2]' onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter='ease-out duration-300'

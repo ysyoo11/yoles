@@ -15,11 +15,16 @@ export default function SearchModal({ isOpen, onClose }: Props) {
   const { searchHistory } = useYolesStore();
 
   return (
-    <Dialog as='div' className='relative z-10' onClose={onClose} open={isOpen}>
+    <Dialog
+      as='div'
+      className='relative z-[2] md:hidden'
+      onClose={onClose}
+      open={isOpen}
+    >
       <div className='fixed inset-0 overflow-y-auto'>
         <div className='flex min-h-full items-center justify-center'>
           <Dialog.Panel className='relative min-h-screen w-full transform overflow-hidden bg-white p-6 text-left align-middle shadow-xl transition-all'>
-            <div className='flex items-center justify-end'>
+            <div className='flex items-center justify-between'>
               <SearchBar className='mr-6' closeModal={onClose} />
               <button onClick={onClose} className='p-1'>
                 <XMarkIcon className='h-4 w-4 stroke-2' />
