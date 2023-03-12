@@ -10,13 +10,9 @@ import TrolleyModal from '@/components/modal/TrolleyModal';
 
 import Logo from './Logo';
 
-interface Props {
-  className?: string;
-}
-
 type ModalType = 'menu' | 'search' | 'trolley';
 
-export default function Header({ className }: Props) {
+export default function Header() {
   const [showModal, setShowModal] = useState<ModalType | null>(null);
 
   const router = useRouter();
@@ -25,9 +21,9 @@ export default function Header({ className }: Props) {
 
   return (
     <>
-      <header className='sticky top-0 w-full py-2 px-6 shadow'>
-        <div className='mx-auto flex max-w-xl items-center justify-between  space-x-10  sm:max-w-7xl'>
-          <div className='flex items-center space-x-4'>
+      <header className='sticky top-0 z-[1] w-full bg-white shadow'>
+        <div className='mx-auto flex max-w-xl items-center justify-between space-x-10 px-6 py-2 sm:max-w-7xl'>
+          <div className='flex items-center space-x-4 md:space-x-0'>
             <button onClick={() => setShowModal('menu')} className='md:hidden'>
               <Bars3Icon className='h-6 w-6' />
             </button>
@@ -35,7 +31,10 @@ export default function Header({ className }: Props) {
               <Logo />
             </button>
           </div>
-          <SearchBar className='hidden md:flex' closeModal={closeModal} />
+          <SearchBar
+            className='hidden md:flex md:max-w-xl'
+            closeModal={closeModal}
+          />
           <div className='flex space-x-6'>
             <button
               onClick={() => setShowModal('search')}
