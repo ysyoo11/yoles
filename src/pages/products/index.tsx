@@ -22,6 +22,8 @@ export default function ProductsPage() {
               alt={item.image.alt}
               height={36}
               width={36}
+              placeholder='blur'
+              blurDataURL={item.image.src}
             />
           </Link>
         ))}
