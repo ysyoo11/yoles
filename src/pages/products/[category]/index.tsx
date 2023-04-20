@@ -3,14 +3,17 @@ import { useKeenSlider } from 'keen-slider/react';
 import { GetStaticPropsContext } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+
 import 'keen-slider/keen-slider.min.css';
 
+import ProductCard from '@/components/custom/ProductCard';
+import useProducts from '@/hooks/use-products';
 import menu from 'public/menu.json';
 
-import type { ProductInfo } from '@/types';
+import type { ProductCategoryInfo } from '@/types';
 
 interface Props {
-  productInfo: ProductInfo;
+  productInfo: ProductCategoryInfo;
 }
 
 export default function CategorizedProductPage({ productInfo }: Props) {
@@ -25,10 +28,11 @@ export default function CategorizedProductPage({ productInfo }: Props) {
   });
 
   const router = useRouter();
+  const { products } = useProducts();
 
   return (
     <section className='mx-auto w-full max-w-7xl py-10 lg:flex lg:px-0 lg:pt-0'>
-      <div className='border-b px-4 pb-4 lg:min-h-screen lg:w-80 lg:border-r lg:px-4 lg:pt-14'>
+      <div className='border-b px-4 pb-4 lg:min-h-screen lg:w-96 lg:border-r lg:px-4 lg:pt-14'>
         <div className='flex flex-col px-4 lg:flex-col-reverse'>
           <button
             onClick={() => router.push('/products')}
@@ -72,9 +76,23 @@ export default function CategorizedProductPage({ productInfo }: Props) {
           </ul>
         </div>
       </div>
-      {/* TODO: */}
-      <section className='p-4'>
-        <p className='text-xs text-gray-400'>1 - 48 of 522 results</p>
+      <section className='w-full p-4'>
+        {products && (
+          <>
+            <p className='text-xs text-gray-400'>{products.length} results</p>
+            <div className='mt-10 grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5'>
+              {products.map((item, idx) => (
+                <ProductCard
+                  key={`product-${idx}`}
+                  name={item.name}
+                  price={item.price}
+                  imageUrl={item.image}
+                  id={item.name}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </section>
     </section>
   );
