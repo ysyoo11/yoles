@@ -1499,6 +1499,11 @@ http-cache-semantics@^4.1.1:
   resolved "https://registry.yarnpkg.com/http-cache-semantics/-/http-cache-semantics-4.1.1.tgz#abe02fcb2985460bf0323be664436ec3476a6d5a"
   integrity sha512-er295DKPVsV82j5kw1Gjt+ADA/XYHsajl82cGNQG2eyoPkvgUhX+nDIyelzhIWbbsXP39EHcI6l5tYs2FYqYXQ==
 
+http-status-codes@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/http-status-codes/-/http-status-codes-2.2.0.tgz#bb2efe63d941dfc2be18e15f703da525169622be"
+  integrity sha512-feERVo9iWxvnejp3SEfm/+oNG517npqL2/PIA8ORjyOZjGC7TwCRQsZylciLS64i6pJ0wRYz3rkXLRwbtFa8Ng==
+
 http2-wrapper@^2.1.10:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/http2-wrapper/-/http2-wrapper-2.2.0.tgz#b80ad199d216b7d3680195077bd7b9060fa9d7f3"
@@ -3003,3 +3008,8 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zod@3.14.4:
+  version "3.14.4"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.14.4.tgz#e678fe9e5469f4663165a5c35c8f3dc66334a5d6"
+  integrity sha512-U9BFLb2GO34Sfo9IUYp0w3wJLlmcyGoMd75qU9yf+DrdGA4kEx6e+l9KOkAlyUO0PSQzZCa3TR4qVlcmwqSDuw==
