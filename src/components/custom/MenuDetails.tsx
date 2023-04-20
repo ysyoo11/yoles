@@ -28,8 +28,6 @@ export default function MenuDetails({ title, image, list, onClick }: Props) {
                 alt={image.alt}
                 width={36}
                 height={36}
-                placeholder='blur'
-                blurDataURL={image.src}
               />
               <span>{title}</span>
             </div>

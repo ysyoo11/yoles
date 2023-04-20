@@ -82,8 +82,6 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                               alt={item.name}
                               width={72}
                               height={72}
-                              placeholder='blur'
-                              blurDataURL={item.imageSrc}
                             />
                             <div className='max-w-xs space-y-2'>
                               <p className='font-medium'>{item.name}</p>
