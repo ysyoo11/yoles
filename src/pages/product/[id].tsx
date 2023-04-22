@@ -43,6 +43,7 @@ export default function ProductDetailPage() {
                 alt={product.name}
                 width={400}
                 height={400}
+                priority
               />
             </div>
             <div className='hidden md:block'>
@@ -55,9 +56,13 @@ export default function ProductDetailPage() {
             <span className='mt-6 block text-3xl font-semibold'>
               ${product.price}
             </span>
+            {product.quantity === 0 && (
+              <p className='text-yoles'>Out of stock</p>
+            )}
             <button
               onClick={addToCard}
-              className='my-6 flex w-full items-center justify-center space-x-2 rounded-full bg-yoles py-3 text-sm text-white hover:bg-red-700 md:max-w-xs'
+              className='my-6 flex w-full cursor-not-allowed items-center justify-center space-x-2 rounded-full bg-yoles py-3 text-sm text-white hover:bg-red-700 disabled:bg-gray-300 md:max-w-xs'
+              disabled={product.quantity === 0}
             >
               <ShoppingCartIcon className='h-5 w-5 stroke-2' />
               <span className='font-medium'>Add to trolley</span>
