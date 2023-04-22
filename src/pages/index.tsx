@@ -125,7 +125,7 @@ export default function HomePage() {
       </div>
 
       {/* Hero section */}
-      <div className='h-[800px] w-full'>
+      <div className='w-full'>
         <ul
           ref={heroSliderRef}
           className='keen-slider relative flex w-full overflow-hidden'
@@ -272,7 +272,7 @@ export default function HomePage() {
                 name={item.name}
                 price={item.price}
                 imageUrl={item.image}
-                id={item.name}
+                id={item.id}
               />
             ))}
         </div>

@@ -87,7 +87,7 @@ export default function CategorizedProductPage({ productInfo }: Props) {
                   name={item.name}
                   price={item.price}
                   imageUrl={item.image}
-                  id={item.name}
+                  id={item.id}
                 />
               ))}
             </div>

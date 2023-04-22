@@ -6,7 +6,7 @@ interface Props {
   name: string;
   price: number;
   imageUrl: string;
-  id: string;
+  id: OurId;
 }
 
 export default function ProductCard({ name, price, imageUrl, id }: Props) {
