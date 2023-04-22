@@ -1,35 +1,21 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import Image from 'next/image';
+import NextImage from 'next/image';
+import Link from 'next/link';
 import { Fragment } from 'react';
+
+import { useYolesStore } from '@/components/yoles-context';
+import { MAX_PURCHASE_QUANTITY } from '@/defines/policy';
+import displayPrice from '@/utils/display-price';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const dummyItemList = [
-  {
-    id: 1,
-    name: 'Chicken breast with chilli sauce and mustard 200g',
-    price: 6.5,
-    details:
-      'This is a chicken breast and it is really good for your health. It is a good source of protein.',
-    quantity: 4,
-    imageSrc: '/image/category/meat-seafood.png',
-  },
-  {
-    id: 2,
-    name: 'Pork belly 150g',
-    price: 8.5,
-    details:
-      'This is a pork belly and it is really good for your health. It is a Korean soul food.',
-    quantity: 2,
-    imageSrc: '/image/category/meat-seafood.png',
-  },
-];
-
 export default function TrolleyModal({ isOpen, onClose }: Props) {
+  const { trolleyItems, setTrolleyItems, total } = useYolesStore();
+
   return (
     <Transition show={isOpen} as={Fragment}>
       <Dialog as='div' className='relative z-[2]' onClose={onClose}>
@@ -45,7 +31,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
           <div className='fixed inset-0 bg-black/30' />
         </Transition.Child>
         <div className='fixed inset-0 flex justify-end overflow-visible'>
-          <div className='flex min-h-full w-full items-center justify-center md:max-w-sm'>
+          <div className='flex min-h-full w-full items-center justify-center md:max-w-md'>
             <Transition.Child
               as={Fragment}
               enter='ease-in-out duration-300 transition transform'
@@ -59,7 +45,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                 <div>
                   <div className='flex items-center justify-between border-b p-6'>
                     <Dialog.Title as='h3' className='text-2xl font-semibold'>
-                      Trolley - 11 items
+                      Trolley - {total.quantity} items
                     </Dialog.Title>
                     <button
                       onClick={onClose}
@@ -68,59 +54,109 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                       <XMarkIcon className='h-5 w-5' />
                     </button>
                   </div>
-                  <div className='border-b p-6'>
-                    <ul>
-                      {/* TODO: */}
-                      {dummyItemList.map((item) => (
-                        <li
-                          key={`cart-item-${item.id}`}
-                          className='flex justify-between py-4'
-                        >
-                          <div className='flex space-x-6'>
-                            <Image
-                              src={item.imageSrc}
-                              alt={item.name}
-                              width={72}
-                              height={72}
-                            />
-                            <div className='max-w-xs space-y-2'>
-                              <p className='font-medium'>{item.name}</p>
-                              <div className='flex space-x-4'>
-                                <select
-                                  name='quantity'
-                                  id='quantity'
-                                  value={item.quantity}
-                                  className='rounded-md border border-gray-400 bg-gray-100 px-2 py-1 text-sm'
+
+                  {trolleyItems.length > 0 ? (
+                    <>
+                      <div className='border-b p-6'>
+                        <ul>
+                          {trolleyItems.map((item) => (
+                            <li
+                              key={`trolley-item-${item._id}`}
+                              className='flex justify-between space-x-4 py-4'
+                            >
+                              <div className='flex space-x-6'>
+                                <Link
+                                  href={`/product/${item._id}`}
+                                  onClick={onClose}
                                 >
-                                  <option>1</option>
-                                  <option>2</option>
-                                  <option>3</option>
-                                  <option>4</option>
-                                  <option>5</option>
-                                  <option>6</option>
-                                </select>
-                                <button className='text-sm text-gray-500 underline hover:no-underline'>
-                                  Remove
-                                </button>
+                                  <NextImage
+                                    src={item.image}
+                                    alt={item.name}
+                                    width={72}
+                                    height={72}
+                                    placeholder='blur'
+                                    blurDataURL={item.image}
+                                  />
+                                </Link>
+                                <div className='max-w-xs space-y-2'>
+                                  <Link
+                                    href={`/product/${item._id}`}
+                                    onClick={onClose}
+                                  >
+                                    <p className='text-sm font-medium hover:underline'>
+                                      {item.name}
+                                    </p>
+                                  </Link>
+                                  <div className='flex space-x-4'>
+                                    <select
+                                      name='quantity'
+                                      id='quantity'
+                                      value={item.quantity}
+                                      onChange={(e) => {
+                                        const newTrolleyItems =
+                                          trolleyItems.map((elem) => {
+                                            if (elem._id === item._id) {
+                                              return {
+                                                ...elem,
+                                                quantity: +e.target.value,
+                                              };
+                                            }
+                                            return elem;
+                                          });
+                                        setTrolleyItems(newTrolleyItems);
+                                      }}
+                                      className='rounded-md border border-gray-400 bg-gray-100 px-2 py-1 text-sm'
+                                    >
+                                      {Array.from(
+                                        Array(MAX_PURCHASE_QUANTITY).keys()
+                                      ).map((i) => (
+                                        <option
+                                          key={`quantity-option-${i + 1}`}
+                                        >
+                                          {i + 1}
+                                        </option>
+                                      ))}
+                                    </select>
+                                    <button
+                                      onClick={() =>
+                                        setTrolleyItems((prev) =>
+                                          prev.filter(
+                                            (elem) => elem._id !== item._id
+                                          )
+                                        )
+                                      }
+                                      className='text-sm text-gray-500 underline hover:no-underline'
+                                    >
+                                      Remove
+                                    </button>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                          <span className='text-xl font-medium'>
-                            ${item.price}
+                              <span className='text-xl font-medium'>
+                                {displayPrice(item.price)}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className='flex w-full justify-center pt-6'>
+                        {/* TODO: Show confirmation modal before deleting all items in trolley */}
+                        <button
+                          className='flex items-center space-x-1.5 text-red-500 hover:underline'
+                          onClick={() => setTrolleyItems([])}
+                        >
+                          <TrashIcon className='h-6 w-6 stroke-2' />
+                          <span className='text-sm font-medium'>
+                            Remove all items
                           </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className='flex w-full justify-center pt-6'>
-                    {/* TODO: */}
-                    <button className='flex items-center space-x-1.5 text-red-500 hover:underline'>
-                      <TrashIcon className='h-6 w-6 stroke-2' />
-                      <span className='text-sm font-medium'>
-                        Remove all items
-                      </span>
-                    </button>
-                  </div>
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className='flex h-96 w-full items-center justify-center'>
+                      <p className='md:text-lg'>Your trolley is empty 🥲</p>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <div className='flex justify-between px-6 pb-4'>
@@ -130,10 +166,15 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                         Excludes service and bagging fees
                       </p>
                     </div>
-                    <span className='text-xl font-semibold'>$15.00</span>
+                    <span className='text-xl font-semibold'>
+                      {displayPrice(total.price)}
+                    </span>
                   </div>
-                  <div className='px-6 pb-2'>
-                    <button className='w-full rounded-full bg-yoles py-3 text-white hover:bg-red-700'>
+                  <div className='px-6 pb-4'>
+                    <button
+                      className='w-full rounded-full bg-yoles py-3 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300'
+                      disabled={trolleyItems.length === 0}
+                    >
                       Checkout
                     </button>
                   </div>

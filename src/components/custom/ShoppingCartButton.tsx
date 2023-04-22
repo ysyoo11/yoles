@@ -12,7 +12,7 @@ export default function ShoppingCartButton({ onClick }: Props) {
 
   return (
     <button
-      className='relative flex w-max flex-col items-center justify-center p-2 text-gray-700'
+      className='relative flex w-max flex-col items-center justify-center p-2 text-gray-700 hover:bg-gray-100'
       onClick={onClick}
     >
       <ShoppingCartIcon className='h-6 w-6' />
