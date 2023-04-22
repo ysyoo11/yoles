@@ -42,6 +42,10 @@ const yolesReducer: Reducer<YolesState, YolesAction> = (state, action) => {
 type YolesStore = YolesState & {
   setSearchHistory: (searchHistory: string[]) => void;
   setTrolleyItems: Dispatch<SetStateAction<Product[]>>;
+  total: {
+    quantity: number;
+    price: number;
+  };
 };
 
 export function YolesProvider({ children }: { children: ReactNode }) {
@@ -50,6 +54,15 @@ export function YolesProvider({ children }: { children: ReactNode }) {
 
   const setSearchHistory = (searchHistory: string[]) =>
     dispatch({ type: 'SET_SEARCH_HISTORY', searchHistory });
+
+  const total = useMemo(() => {
+    const qtyArray = trolleyItems.map((item) => item.quantity);
+    const priceArray = trolleyItems.map((item) => item.price * item.quantity);
+    return {
+      quantity: qtyArray.reduce((partialSum, a) => partialSum + a, 0),
+      price: priceArray.reduce((partialSum, a) => partialSum + a, 0),
+    };
+  }, [trolleyItems]);
 
   useEffect(() => {
     const storedValue = window.localStorage.getItem(SEARCH_HISTORY_KEY);
@@ -69,10 +82,11 @@ export function YolesProvider({ children }: { children: ReactNode }) {
     () => ({
       ...state,
       trolleyItems,
+      total,
       setSearchHistory,
       setTrolleyItems,
     }),
-    [state, trolleyItems]
+    [state, trolleyItems, total]
   );
 
   return (
