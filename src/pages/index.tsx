@@ -50,7 +50,19 @@ export default function HomePage() {
   const { products, loading } = useProducts();
 
   useEffect(() => {
-    if (width === undefined) return;
+    const autoPlayHeroInterval = setInterval(() => {
+      if (!heroInstanceRef.current) return;
+      if (width && width > 768) {
+        heroInstanceRef.current.next();
+      }
+    }, 4000);
+    return () => {
+      clearInterval(autoPlayHeroInterval);
+    };
+  }, [heroInstanceRef, width]);
+
+  useEffect(() => {
+    if (!width) return;
     if (width > 640) {
       setPerView(6);
     } else {
@@ -119,74 +131,134 @@ export default function HomePage() {
           className='keen-slider relative flex w-full overflow-hidden'
         >
           {heroSlides.map((item, idx) => (
-            <li key={`hero-slide-${idx}`} className='keen-slider__slide'>
-              <div
-                className='h-[500px] w-full bg-cover bg-center bg-no-repeat'
-                style={{
-                  backgroundImage: `url("${item.imageSrc}")`,
-                }}
-              />
-              <div className='relative h-[300px] w-full space-y-6 bg-zinc-800 px-6 pt-10 pb-8 text-white'>
-                <div className='space-y-4'>
-                  <h6 className='text-2xl font-semibold'>{item.title}</h6>
-                  <p className='text-sm font-light'>{item.description}</p>
+            <li
+              key={`hero-slide-${idx}`}
+              className='keen-slider__slide bg-zinc-800'
+            >
+              <div className='md:mx-auto md:flex  md:max-w-7xl md:flex-row-reverse'>
+                <div
+                  className='h-[500px] w-full bg-cover bg-center bg-no-repeat md:h-[24rem] lg:h-[30rem]'
+                  style={{
+                    backgroundImage: `url("${item.imageSrc}")`,
+                  }}
+                />
+                <div className='relative h-[300px] w-full space-y-6 px-6 pt-10 pb-8 text-white lg:space-y-8'>
+                  <div className='space-y-4 lg:space-y-6'>
+                    <h6 className='text-2xl font-semibold md:text-3xl lg:text-5xl'>
+                      {item.title}
+                    </h6>
+                    <p className='text-sm font-light md:text-base lg:text-lg'>
+                      {item.description}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => router.push('/products')}
+                    className='flex w-full items-center justify-center rounded-full bg-yoles py-3 hover:bg-red-700 md:w-max md:px-6'
+                  >
+                    <span className='text-sm'>Shop now</span>
+                  </button>
                 </div>
-                <button
-                  onClick={() => router.push('/products')}
-                  className='flex w-full items-center justify-center rounded-full bg-yoles py-3 hover:bg-red-700'
-                >
-                  <span className='text-sm'>Shop now</span>
-                </button>
               </div>
             </li>
           ))}
           {heroLoaded && heroInstanceRef.current && (
-            <div className='absolute bottom-4 flex w-full justify-between px-6'>
-              <ArrowButton
-                direction='left'
-                disabled={heroCurrentSlide === 0}
-                onClick={(e) => {
-                  if (!heroInstanceRef.current) return;
-                  e.stopPropagation();
-                  heroInstanceRef.current.prev();
-                }}
-                isHero
-              />
-              <div className='space-x-4'>
-                {Array.from(
-                  Array(
-                    heroInstanceRef.current.track.details.slides.length
-                  ).keys()
-                ).map((idx) => (
-                  <button
-                    key={`dot-${idx}`}
-                    className={clsx(
-                      'h-2 w-2 rounded-full border border-white',
-                      {
-                        'bg-white': heroCurrentSlide === idx,
-                      }
-                    )}
-                    onClick={() => {
-                      if (!heroInstanceRef.current) return;
-                      heroInstanceRef.current.moveToIdx(idx);
-                    }}
-                  />
-                ))}
+            <>
+              {/* Hero controller - Mobile view */}
+              <div className='absolute bottom-4 flex w-full justify-between px-6 md:hidden'>
+                <ArrowButton
+                  direction='left'
+                  disabled={heroCurrentSlide === 0}
+                  onClick={(e) => {
+                    if (!heroInstanceRef.current) return;
+                    e.stopPropagation();
+                    heroInstanceRef.current.prev();
+                  }}
+                  isHero
+                />
+                <div className='space-x-4'>
+                  {Array.from(
+                    Array(
+                      heroInstanceRef.current.track.details.slides.length
+                    ).keys()
+                  ).map((idx) => (
+                    <button
+                      key={`dot-${idx}`}
+                      className={clsx(
+                        'h-2 w-2 rounded-full border border-white',
+                        {
+                          'bg-white': heroCurrentSlide === idx,
+                        }
+                      )}
+                      onClick={() => {
+                        if (!heroInstanceRef.current) return;
+                        heroInstanceRef.current.moveToIdx(idx);
+                      }}
+                    />
+                  ))}
+                </div>
+                <ArrowButton
+                  direction='right'
+                  disabled={
+                    heroCurrentSlide ===
+                    heroInstanceRef.current.track.details.slides.length - 1
+                  }
+                  onClick={(e) => {
+                    if (!heroInstanceRef.current) return;
+                    e.stopPropagation();
+                    heroInstanceRef.current.next();
+                  }}
+                  isHero
+                />
               </div>
-              <ArrowButton
-                direction='right'
-                disabled={
-                  heroCurrentSlide ===
-                  heroInstanceRef.current.track.details.slides.length - 1
-                }
-                onClick={(e) => {
-                  if (!heroInstanceRef.current) return;
-                  e.stopPropagation();
-                  heroInstanceRef.current.next();
-                }}
-                isHero
-              />
-            </div>
+
+              {/* Hero controller - PC view */}
+              <div className='absolute bottom-4 right-4 hidden items-center justify-between space-x-8 rounded-full bg-white shadow-md md:flex'>
+                <ArrowButton
+                  direction='left'
+                  disabled={heroCurrentSlide === 0}
+                  onClick={(e) => {
+                    if (!heroInstanceRef.current) return;
+                    e.stopPropagation();
+                    heroInstanceRef.current.prev();
+                  }}
+                  isHero
+                />
+                <div className='flex items-center space-x-4'>
+                  {Array.from(
+                    Array(
+                      heroInstanceRef.current.track.details.slides.length
+                    ).keys()
+                  ).map((idx) => (
+                    <button
+                      key={`dot-${idx}`}
+                      className={clsx(
+                        'h-2 w-2 rounded-full border border-black',
+                        {
+                          'bg-gray-900': heroCurrentSlide === idx,
+                        }
+                      )}
+                      onClick={() => {
+                        if (!heroInstanceRef.current) return;
+                        heroInstanceRef.current.moveToIdx(idx);
+                      }}
+                    />
+                  ))}
+                </div>
+                <ArrowButton
+                  direction='right'
+                  disabled={
+                    heroCurrentSlide ===
+                    heroInstanceRef.current.track.details.slides.length - 1
+                  }
+                  onClick={(e) => {
+                    if (!heroInstanceRef.current) return;
+                    e.stopPropagation();
+                    heroInstanceRef.current.next();
+                  }}
+                  isHero
+                />
+              </div>
+            </>
           )}
         </ul>
       </div>
@@ -227,7 +299,7 @@ function ArrowButton({
           !isHero,
         'right-2': direction === 'right' && !isHero,
         'left-2': direction === 'left' && !isHero,
-        'hover:bg-white/10': isHero,
+        'hover:bg-white/10 md:hover:bg-gray-100': isHero,
       })}
       onClick={onClick}
       disabled={!isHero ? disabled : false}
@@ -236,7 +308,7 @@ function ArrowButton({
         <ChevronRightIcon
           className={clsx('h-4 w-4 stroke-2', {
             'group-hover:stroke-orange-500': !isHero,
-            'stroke-white': isHero,
+            'stroke-white md:stroke-gray-900': isHero,
           })}
         />
       )}
@@ -244,7 +316,7 @@ function ArrowButton({
         <ChevronLeftIcon
           className={clsx('h-4 w-4 stroke-2', {
             'group-hover:stroke-orange-500': !isHero,
-            'stroke-white': isHero,
+            'stroke-white md:stroke-gray-900': isHero,
           })}
         />
       )}
