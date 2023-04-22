@@ -34,7 +34,7 @@ export type ProductCategory =
     };
 
 export interface Product {
-  id: OurId;
+  _id: OurId;
   category: ProductCategory;
   name: string;
   price: number;

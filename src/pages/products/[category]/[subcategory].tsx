@@ -48,7 +48,7 @@ export default function SubCategorizedProductPage() {
                   name={item.name}
                   price={item.price}
                   imageUrl={item.image}
-                  id={item.id}
+                  id={item._id}
                 />
               ))}
             </div>

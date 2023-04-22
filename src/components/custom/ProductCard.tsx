@@ -1,5 +1,5 @@
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import { useRouter } from 'next/router';
 
 interface Props {
@@ -18,13 +18,14 @@ export default function ProductCard({ name, price, imageUrl, id }: Props) {
       onClick={() => router.push(`/product/${id}`)}
     >
       <div className='items-ceneter flex w-full justify-center px-6 py-10'>
-        <Image
+        <NextImage
           src={imageUrl}
           height={200}
           width={200}
           alt='meat photo'
           className='overflow-hidden'
-          priority
+          placeholder='blur'
+          blurDataURL={imageUrl}
         />
       </div>
       <p className='mb-4 h-full max-h-[60px] w-full font-medium line-clamp-2'>

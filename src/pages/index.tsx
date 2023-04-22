@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { useKeenSlider } from 'keen-slider/react';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useState } from 'react';
@@ -82,12 +82,13 @@ export default function HomePage() {
             <li key={`item-menu-${idx}`} className='keen-slider__slide'>
               <Link href={`/products/${item.image.alt}`}>
                 <div className='group flex flex-col items-center justify-center space-y-2 text-center'>
-                  <Image
+                  <NextImage
                     src={item.image.src}
                     alt={item.image.alt}
                     width={64}
                     height={64}
-                    priority
+                    placeholder='blur'
+                    blurDataURL={item.image.src}
                   />
                   <span className='w-20 text-sm font-semibold group-hover:underline'>
                     {item.title}
@@ -272,7 +273,7 @@ export default function HomePage() {
                 name={item.name}
                 price={item.price}
                 imageUrl={item.image}
-                id={item.id}
+                id={item._id}
               />
             ))}
         </div>
