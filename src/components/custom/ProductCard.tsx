@@ -2,6 +2,8 @@ import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import NextImage from 'next/image';
 import { useRouter } from 'next/router';
 
+import displayPrice from '@/utils/display-price';
+
 interface Props {
   name: string;
   price: number;
@@ -31,8 +33,7 @@ export default function ProductCard({ name, price, imageUrl, id }: Props) {
       <p className='mb-4 h-full max-h-[60px] w-full font-medium line-clamp-2'>
         {name}
       </p>
-      {/* TODO: make a util for displaying price */}
-      <span className='text-xl font-semibold'>$ {price}</span>
+      <span className='text-xl font-semibold'>{displayPrice(price)}</span>
       {/* TODO: Add to cart */}
       <button className='mt-6 flex items-center justify-center space-x-2 rounded-full border py-2 hover:bg-yoles hover:text-white'>
         <ShoppingCartIcon className='h-5 w-5 stroke-2' />

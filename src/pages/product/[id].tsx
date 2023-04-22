@@ -12,6 +12,7 @@ import { Product } from '@/backend/product/model';
 import { useYolesStore } from '@/components/yoles-context';
 import { MAX_PURCHASE_QUANTITY } from '@/defines/policy';
 import { getProduct } from '@/lib/get-product';
+import displayPrice from '@/utils/display-price';
 
 export default function ProductDetailPage() {
   const [loading, setLoading] = useState(false);
@@ -100,7 +101,7 @@ export default function ProductDetailPage() {
           <div className='md:w-1/2'>
             <h5 className='text-2xl font-medium'>{product.name}</h5>
             <span className='mt-6 block text-3xl font-semibold'>
-              ${product.price}
+              {displayPrice(product.price)}
             </span>
             {product.quantity === 0 && (
               <p className='text-yoles'>Out of stock</p>
