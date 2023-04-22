@@ -1,0 +1,1 @@
+export const MAX_PURCHASE_QUANTITY = 20;
