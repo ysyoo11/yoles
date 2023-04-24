@@ -24,8 +24,7 @@ export default function ProductCard({ product }: Props) {
           src={image}
           height={200}
           width={200}
-          alt='meat photo'
-          className='overflow-hidden'
+          alt={name}
           placeholder='blur'
           blurDataURL={image}
         />

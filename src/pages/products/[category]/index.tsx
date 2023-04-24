@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 import 'keen-slider/keen-slider.min.css';
 
-import ProductCard from '@/components/custom/ProductCard';
+import ProductsDisplay from '@/components/custom/ProductsDisplay';
 import useProducts from '@/hooks/use-products';
 import menu from 'public/menu.json';
 
@@ -77,16 +77,7 @@ export default function CategorizedProductPage({ productInfo }: Props) {
         </div>
       </div>
       <section className='w-full p-4'>
-        {products && (
-          <>
-            <p className='text-xs text-gray-400'>{products.length} results</p>
-            <div className='mt-10 grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5'>
-              {products.map((item, idx) => (
-                <ProductCard key={`product-${idx}`} product={item} />
-              ))}
-            </div>
-          </>
-        )}
+        <ProductsDisplay products={products} showResultNumber />
       </section>
     </section>
   );

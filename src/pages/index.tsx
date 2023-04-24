@@ -1,4 +1,8 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowRightIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { useKeenSlider } from 'keen-slider/react';
 import { GetStaticProps } from 'next';
@@ -9,7 +13,7 @@ import { MouseEvent, useEffect, useState } from 'react';
 
 import { collection } from '@/backend/collection';
 import { Product } from '@/backend/product/model';
-import ProductCard from '@/components/custom/ProductCard';
+import ProductsDisplay from '@/components/custom/ProductsDisplay';
 import useWindowSize from '@/hooks/use-window-size';
 import heroSlides from 'public/hero.json';
 import menu from 'public/menu.json';
@@ -267,13 +271,16 @@ export default function HomePage({ products }: Props) {
           )}
         </ul>
       </div>
-      <section className='mx-auto max-w-7xl px-4 py-4'>
+      <section className='mx-auto flex max-w-7xl flex-col px-4 py-4'>
         <h6 className='mt-6 text-3xl font-medium md:mt-10'>Shop Items</h6>
-        <div className='grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5'>
-          {products.map((item, idx) => (
-            <ProductCard key={`product-${idx}`} product={item} />
-          ))}
-        </div>
+        <ProductsDisplay products={products} />
+        <button
+          onClick={() => router.push('/products')}
+          className='group flex items-center space-x-2 self-center text-gray-700 hover:underline md:mt-10'
+        >
+          <span className='md:text-lg'>See more</span>
+          <ArrowRightIcon className='h-5 w-5 stroke-2 transition-transform group-hover:translate-x-1' />
+        </button>
       </section>
     </div>
   );
