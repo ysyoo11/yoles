@@ -57,6 +57,7 @@ export default function SearchBar({ className, closeModal }: Props) {
           type='text'
           className='w-full rounded-full border border-gray-400 bg-gray-100 px-6 py-2 placeholder:text-sm placeholder:text-gray-700 focus:bg-white focus:outline-blue-500'
           placeholder='Search products'
+          value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
         <button
