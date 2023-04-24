@@ -1,27 +1,21 @@
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
+import { GetStaticPaths, GetStaticPropsContext } from 'next';
 import { useRouter } from 'next/router';
-import { useMemo } from 'react';
 
 import ProductCard from '@/components/custom/ProductCard';
 import useProducts from '@/hooks/use-products';
 import menu from 'public/menu.json';
 
-export default function SubCategorizedProductPage() {
-  const router = useRouter();
-  const { products } = useProducts();
+interface Props {
+  category: {
+    main: string;
+    sub: string;
+  };
+}
 
-  const category = useMemo(() => {
-    const currentCategory = menu.find(
-      (item) => item.image.alt === router.query.category
-    );
-    if (!currentCategory) return { main: 'All products', sub: '' };
-    return {
-      main: currentCategory.title,
-      sub: currentCategory.list.find(
-        (item) => item.href === `/${router.query.subcategory}`
-      )!.title,
-    };
-  }, [router.query.category, router.query.subcategory]);
+export default function SubCategorizedProductPage({ category }: Props) {
+  const router = useRouter();
+  const { products, loading } = useProducts();
 
   return (
     <section className='mx-auto w-full max-w-7xl py-10 lg:flex lg:px-0 lg:pt-0'>
@@ -38,6 +32,7 @@ export default function SubCategorizedProductPage() {
         </div>
       </div>
       <section className='w-full p-4'>
+        {loading && <p>Loading...</p>}
         {products && (
           <>
             <p className='text-xs text-gray-400'>{products.length} results</p>
@@ -57,4 +52,46 @@ export default function SubCategorizedProductPage() {
       </section>
     </section>
   );
+}
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: menu
+      .map((item) =>
+        item.list.map((list) => ({
+          params: {
+            category: item.image.alt,
+            subcategory: list.href.replace('/', ''),
+          },
+        }))
+      )
+      .flat(),
+    fallback: false,
+  };
+};
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  if (!context.params) return;
+
+  const main = context.params.category as string;
+  const sub = context.params.subcategory as string;
+  const categoryData = menu.find((item) => item.image.alt === main);
+
+  if (!categoryData) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const category = {
+    main: categoryData.title,
+    sub: categoryData['list'].filter((item) => item.href === `/${sub}`)[0]
+      .title,
+  };
+
+  return {
+    props: {
+      category,
+    },
+  };
 }

@@ -1,18 +1,24 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { useKeenSlider } from 'keen-slider/react';
+import { GetStaticProps } from 'next';
 import NextImage from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { MouseEvent, useEffect, useState } from 'react';
 
+import { collection } from '@/backend/collection';
+import { Product } from '@/backend/product/model';
 import ProductCard from '@/components/custom/ProductCard';
-import useProducts from '@/hooks/use-products';
 import useWindowSize from '@/hooks/use-window-size';
 import heroSlides from 'public/hero.json';
 import menu from 'public/menu.json';
 
-export default function HomePage() {
+interface Props {
+  products: Product[];
+}
+
+export default function HomePage({ products }: Props) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [heroCurrentSlide, setHeroCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -46,8 +52,6 @@ export default function HomePage() {
     loop: true,
     mode: 'snap',
   });
-
-  const { products, loading } = useProducts();
 
   useEffect(() => {
     const autoPlayHeroInterval = setInterval(() => {
@@ -264,18 +268,17 @@ export default function HomePage() {
         </ul>
       </div>
       <section className='mx-auto max-w-7xl px-4 py-4'>
+        <h6 className='mt-6 text-3xl font-medium md:mt-10'>Shop Items</h6>
         <div className='grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5'>
-          {loading && <p>Loading...</p>}
-          {products &&
-            products.map((item, idx) => (
-              <ProductCard
-                key={`product-${idx}`}
-                name={item.name}
-                price={item.price}
-                imageUrl={item.image}
-                id={item._id}
-              />
-            ))}
+          {products.map((item, idx) => (
+            <ProductCard
+              key={`product-${idx}`}
+              name={item.name}
+              price={item.price}
+              imageUrl={item.image}
+              id={item._id}
+            />
+          ))}
         </div>
       </section>
     </div>
@@ -324,3 +327,20 @@ function ArrowButton({
     </button>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    const col = await collection.products();
+    const products = await col
+      .find({ quantity: { $gt: 0 } })
+      .limit(10)
+      .toArray();
+
+    return { props: { products: JSON.parse(JSON.stringify(products)) } };
+  } catch (e) {
+    console.error(e);
+    return {
+      props: { products: [] },
+    };
+  }
+};
