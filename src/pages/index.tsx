@@ -271,13 +271,7 @@ export default function HomePage({ products }: Props) {
         <h6 className='mt-6 text-3xl font-medium md:mt-10'>Shop Items</h6>
         <div className='grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5'>
           {products.map((item, idx) => (
-            <ProductCard
-              key={`product-${idx}`}
-              name={item.name}
-              price={item.price}
-              imageUrl={item.image}
-              id={item._id}
-            />
+            <ProductCard key={`product-${idx}`} product={item} />
           ))}
         </div>
       </section>

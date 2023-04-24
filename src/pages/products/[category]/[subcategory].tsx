@@ -38,13 +38,7 @@ export default function SubCategorizedProductPage({ category }: Props) {
             <p className='text-xs text-gray-400'>{products.length} results</p>
             <div className='mt-10 grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5'>
               {products.map((item, idx) => (
-                <ProductCard
-                  key={`product-${idx}`}
-                  name={item.name}
-                  price={item.price}
-                  imageUrl={item.image}
-                  id={item._id}
-                />
+                <ProductCard key={`product-${idx}`} product={item} />
               ))}
             </div>
           </>
