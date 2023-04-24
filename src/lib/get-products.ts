@@ -2,16 +2,18 @@ import { Product } from '@/backend/product/model';
 
 import { fetcher } from './fetcher';
 
-export async function getProducts({
-  main,
-  sub,
-}: {
-  main: string | undefined;
-  sub: string | undefined;
-}) {
+interface Props {
+  main?: string;
+  sub?: string;
+  q?: string;
+}
+
+export async function getProducts({ main, sub, q }: Props) {
   return await fetcher
     .get(
-      main === undefined && sub === undefined
+      q
+        ? `/api/search?q=${q}`
+        : main === undefined && sub === undefined
         ? `/api/products`
         : main !== undefined && sub === undefined
         ? `/api/products?main=${main}`
