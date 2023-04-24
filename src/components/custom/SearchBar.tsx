@@ -41,11 +41,15 @@ export default function SearchBar({ className, closeModal }: Props) {
       <form
         action='submit'
         onSubmit={(e) => {
-          if (searchInput === '') router.push('/');
           e.preventDefault();
-          addSearchHistory();
-          router.push(`/products?q=${searchInput}`);
-          closeModal();
+          if (searchInput === '') {
+            return;
+          } else {
+            addSearchHistory();
+            closeModal();
+            setSearchInput('');
+            router.push(`/search/${searchInput}`);
+          }
         }}
         className='w-full'
       >
