@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { Product } from '@/backend/product/model';
 import AddTrolleyButton from '@/components/custom/AddTrolleyButton';
+import StockCount from '@/components/custom/StockCount';
 import { getProduct } from '@/lib/get-product';
 import displayPrice from '@/utils/display-price';
 
@@ -61,9 +62,10 @@ export default function ProductDetailPage() {
             <span className='mt-6 block text-3xl font-semibold'>
               {displayPrice(product.price)}
             </span>
-            {product.quantity === 0 && (
-              <p className='text-yoles'>Out of stock</p>
-            )}
+            <StockCount
+              quantity={product.quantity}
+              className='mt-2 md:mt-4 md:text-base'
+            />
             <AddTrolleyButton product={product} isProductDetailPage />
             <div className='md:hidden'>
               <h6 className='text-2xl font-medium'>Product details</h6>
