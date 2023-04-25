@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Fragment } from 'react';
 
 import { useYolesStore } from '@/components/yoles-context';
+import { useAssertiveStore } from '@/context/assertives';
 import { MAX_PURCHASE_QUANTITY } from '@/defines/policy';
 import displayPrice from '@/utils/display-price';
 
@@ -15,6 +16,8 @@ interface Props {
 
 export default function TrolleyModal({ isOpen, onClose }: Props) {
   const { trolleyItems, setTrolleyItems, total } = useYolesStore();
+
+  const { showModal } = useAssertiveStore();
 
   return (
     <Transition show={isOpen} as={Fragment}>
@@ -119,11 +122,25 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                                     </select>
                                     <button
                                       onClick={() =>
-                                        setTrolleyItems((prev) =>
-                                          prev.filter(
-                                            (elem) => elem._id !== item._id
-                                          )
-                                        )
+                                        showModal({
+                                          title:
+                                            'Would you like to remove the item?',
+                                          content: '',
+                                          variant: 'alert',
+                                          actionButton: {
+                                            label: 'Yes',
+                                            onClick: () =>
+                                              setTrolleyItems((prev) =>
+                                                prev.filter(
+                                                  (elem) =>
+                                                    elem._id !== item._id
+                                                )
+                                              ),
+                                          },
+                                          cancelButton: {
+                                            label: 'No',
+                                          },
+                                        })
                                       }
                                       className='text-sm text-gray-500 underline hover:no-underline'
                                     >
@@ -140,10 +157,23 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                         </ul>
                       </div>
                       <div className='flex w-full justify-center pt-6'>
-                        {/* TODO: Show confirmation modal before deleting all items in trolley */}
                         <button
                           className='flex items-center space-x-1.5 text-red-500 hover:underline'
-                          onClick={() => setTrolleyItems([])}
+                          onClick={() =>
+                            showModal({
+                              title:
+                                'Would you like to remove every item from the trolley?',
+                              content: '',
+                              variant: 'alert',
+                              actionButton: {
+                                label: 'Yes',
+                                onClick: () => setTrolleyItems([]),
+                              },
+                              cancelButton: {
+                                label: 'No',
+                              },
+                            })
+                          }
                         >
                           <TrashIcon className='h-6 w-6 stroke-2' />
                           <span className='text-sm font-medium'>
