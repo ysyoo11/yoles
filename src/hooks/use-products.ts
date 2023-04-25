@@ -8,8 +8,8 @@ import type { ApiError } from '@/utils/api-error';
 
 export default function useProducts() {
   const router = useRouter();
-  const mainCategory = router.query.category;
-  const subCategory = router.query.subcategory;
+  const mainCategory = router.query.category as string;
+  const subCategory = router.query.subcategory as string;
 
   const {
     data: products,
@@ -19,8 +19,8 @@ export default function useProducts() {
     `${SWR_KEY.PRODUCTS}-${mainCategory}-${subCategory}`,
     async () =>
       await getProducts({
-        main: mainCategory as string,
-        sub: subCategory as string,
+        main: mainCategory,
+        sub: subCategory,
       }),
     {
       shouldRetryOnError: false,
@@ -29,7 +29,7 @@ export default function useProducts() {
 
   return {
     loading: !products && !error,
-    products: !error ? products : [],
+    products: !error ? products : undefined,
     error: error as ApiError | undefined,
     mutate,
   };
