@@ -40,7 +40,7 @@ export function Modal({
         open={show}
         onClose={close}
       >
-        <div className='flex min-h-screen items-center justify-center pt-32 text-center backdrop-blur-lg sm:block sm:p-0'>
+        <div className='flex min-h-screen items-center justify-center pt-32 text-center sm:block sm:p-0'>
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'

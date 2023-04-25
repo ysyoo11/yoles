@@ -39,7 +39,7 @@ export default function SearchModal({ isOpen, onClose }: Props) {
                       <button
                         className='flex h-full w-full items-center space-x-4 rounded border border-transparent px-4 py-2 hover:border-gray-800 hover:underline'
                         onClick={() => {
-                          router.push(`/products?q=${item}`);
+                          router.push(`/search/${item}`);
                           onClose();
                         }}
                       >

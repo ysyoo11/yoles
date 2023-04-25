@@ -13,6 +13,7 @@ export default function StockCount({
         'text-sm',
         {
           'text-red-500': quantity === 0,
+          'text-gray-500': quantity !== 0,
         },
         className
       )}

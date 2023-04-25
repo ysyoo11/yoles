@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Product } from '@/backend/product/model';
 import AddTrolleyButton from '@/components/custom/AddTrolleyButton';
 import StockCount from '@/components/custom/StockCount';
+import { useAssertiveStore } from '@/context/assertives';
 import { getProduct } from '@/lib/get-product';
 import displayPrice from '@/utils/display-price';
 
@@ -15,15 +16,17 @@ export default function ProductDetailPage() {
 
   const router = useRouter();
 
+  const { showAlert } = useAssertiveStore();
+
   const getProductInfo = useCallback(async () => {
     setLoading(true);
     if (router.query.id) {
       await getProduct({ id: router.query.id as string })
         .then((data) => setProduct(data))
-        .catch((err) => console.error(err))
+        .catch(showAlert)
         .finally(() => setLoading(false));
     }
-  }, [router.query.id]);
+  }, [router.query.id, showAlert]);
 
   useEffect(() => {
     getProductInfo();
