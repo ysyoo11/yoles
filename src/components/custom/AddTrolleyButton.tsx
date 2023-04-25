@@ -104,7 +104,7 @@ export default function AddTrolleyButton({
                   : setQuantity(e.target.valueAsNumber);
                 e.target.value === '' && setQuantity(0);
               }}
-              value={quantity}
+              value={Number(quantity).toString()}
               max={availableQty}
               min={0}
             />
