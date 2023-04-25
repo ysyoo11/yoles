@@ -3,10 +3,11 @@ import {
   PlusIcon,
   ShoppingCartIcon,
 } from '@heroicons/react/24/outline';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Product } from '@/backend/product/model';
 import { useYolesStore } from '@/components/yoles-context';
+import { useAssertiveStore } from '@/context/assertives';
 import { MAX_PURCHASE_QUANTITY } from '@/defines/policy';
 
 interface Props {
@@ -25,13 +26,25 @@ export default function AddTrolleyButton({
 
   const { trolleyItems, setTrolleyItems } = useYolesStore();
 
+  const { showNoti } = useAssertiveStore();
+
+  const availableQty = useMemo(() => {
+    if (product.quantity > MAX_PURCHASE_QUANTITY) {
+      return MAX_PURCHASE_QUANTITY;
+    }
+    return product.quantity;
+  }, [product.quantity]);
+
   const addToCart = useCallback(() => {
     if (trolleyItems.find((item) => item._id === product._id)) {
       const currentItemQty = trolleyItems.filter(
         (item) => item._id === product._id
       )[0].quantity;
-      if (currentItemQty + quantity > MAX_PURCHASE_QUANTITY) {
-        alert(`You cannot purchase more than ${MAX_PURCHASE_QUANTITY}.`);
+      if (currentItemQty + quantity > availableQty) {
+        showNoti({
+          title: `You cannot purchase more than ${availableQty}.`,
+          variant: 'alert',
+        });
         setQuantity(DEFAULT_QUANTITY);
         return;
       }
@@ -47,7 +60,14 @@ export default function AddTrolleyButton({
     }
     setTrolleyItems((prev) => [...prev, { ...product, quantity }]);
     setQuantity(DEFAULT_QUANTITY);
-  }, [trolleyItems, setTrolleyItems, product, quantity]);
+  }, [
+    trolleyItems,
+    setTrolleyItems,
+    product,
+    quantity,
+    availableQty,
+    showNoti,
+  ]);
 
   useEffect(() => {
     if (quantity === 0) {
@@ -77,14 +97,15 @@ export default function AddTrolleyButton({
             <input
               type='number'
               className='w-max rounded-md bg-gray-100 py-1 px-2 font-medium'
+              onClick={(e) => e.stopPropagation()}
               onChange={(e) => {
-                e.target.valueAsNumber > 20
-                  ? setQuantity(20)
+                e.target.valueAsNumber > availableQty
+                  ? setQuantity(availableQty)
                   : setQuantity(e.target.valueAsNumber);
                 e.target.value === '' && setQuantity(0);
               }}
               value={quantity}
-              max={MAX_PURCHASE_QUANTITY}
+              max={availableQty}
               min={0}
             />
             <button
@@ -93,7 +114,7 @@ export default function AddTrolleyButton({
                 e.stopPropagation();
                 setQuantity((prev) => prev + 1);
               }}
-              disabled={quantity === MAX_PURCHASE_QUANTITY}
+              disabled={quantity === availableQty}
             >
               <PlusIcon className='h-4 w-4 stroke-white stroke-2' />
             </button>
