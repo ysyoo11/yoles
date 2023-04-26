@@ -82,9 +82,9 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
               leaveFrom='translate-x-0'
               leaveTo='translate-x-full'
             >
-              <Dialog.Panel className='flex min-h-screen w-full transform flex-col justify-between overflow-hidden bg-white text-left align-middle shadow-xl transition-all'>
-                <div className='overflow-y-auto'>
-                  <div className='flex items-center justify-between border-b p-6'>
+              <Dialog.Panel className='flex h-screen w-full transform flex-col bg-white text-left align-middle shadow-xl transition-all'>
+                <div className='relative flex h-full flex-col overflow-y-auto'>
+                  <div className='sticky top-0 z-[1] flex h-max items-center justify-between border-b bg-white p-6'>
                     <Dialog.Title as='div' className='text-2xl font-semibold'>
                       {page === 'trolley' && (
                         <h3>Trolley - {total.quantity} items</h3>
@@ -124,17 +124,18 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                     <>
                       {trolleyItems.length > 0 ? (
                         <>
-                          <div className='p-6'>
+                          <div className='h-full overflow-y-auto p-6'>
                             <ul className='divide-y'>
                               {trolleyItems.map((item) => (
                                 <li
                                   key={`trolley-item-${item._id}`}
                                   className='flex justify-between space-x-4 py-4'
                                 >
-                                  <div className='flex space-x-6'>
+                                  <div className='flex w-full items-center justify-between space-x-6'>
                                     <Link
                                       href={`/product/${item._id}`}
                                       onClick={close}
+                                      className='w-max'
                                     >
                                       <NextImage
                                         src={item.image}
@@ -145,7 +146,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                                         blurDataURL={item.image}
                                       />
                                     </Link>
-                                    <div className='max-w-xs space-y-2'>
+                                    <div className='w-full space-y-2'>
                                       <Link
                                         href={`/product/${item._id}`}
                                         onClick={close}
@@ -214,13 +215,13 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                                     </div>
                                   </div>
                                   <span className='text-xl font-medium'>
-                                    {displayPrice(item.price)}
+                                    {displayPrice(item.price * item.quantity)}
                                   </span>
                                 </li>
                               ))}
                             </ul>
                           </div>
-                          <div className='flex w-full justify-center pt-6'>
+                          <div className='flex w-full justify-center py-6'>
                             <button
                               className='flex items-center space-x-1.5 text-red-500 hover:underline'
                               onClick={() =>
@@ -255,7 +256,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                   )}
 
                   {page === 'address' && (
-                    <section className='w-full px-6'>
+                    <section className='h-full w-full overflow-y-auto px-6'>
                       <div className='space-y-4 py-6'>
                         <Input
                           label='Address'
@@ -363,7 +364,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                   )}
 
                   {page === 'confirm' && (
-                    <section className='w-full space-y-8 px-6 py-6'>
+                    <section className='h-full w-full space-y-8 overflow-y-auto p-6'>
                       <div className='space-y-4'>
                         <h6 className='text-2xl font-semibold'>
                           Delivery Information
@@ -421,7 +422,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                             </li>
                           ))}
                         </ul>
-                        <div className='flex justify-between px-4 pb-4'>
+                        <div className='flex justify-between px-4 py-4'>
                           <div className='space-y-1'>
                             <span className='text-xl font-semibold'>Total</span>
                             <p className='text-xs text-gray-500'>
@@ -439,7 +440,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                 <div>
                   {page === 'trolley' && (
                     <>
-                      <div className='flex justify-between px-6 pb-4'>
+                      <div className='flex justify-between px-6 py-4'>
                         <div className='space-y-1'>
                           <span className='text-xl font-semibold'>Total</span>
                           <p className='text-xs text-gray-500'>
@@ -462,7 +463,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                     </>
                   )}
                   {page === 'address' && (
-                    <div className='px-6 pb-4'>
+                    <div className='px-6 py-4'>
                       <button
                         className='w-full rounded-full bg-yoles py-3 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300'
                         disabled={Object.values(userInfo).includes('')}
@@ -473,7 +474,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                     </div>
                   )}
                   {page === 'confirm' && (
-                    <div className='px-6 pb-4'>
+                    <div className='px-6 py-4'>
                       <button
                         className='w-full rounded-full bg-yoles py-3 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300'
                         onClick={() =>
