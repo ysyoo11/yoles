@@ -334,7 +334,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const col = await collection.products();
     const products = await col
       .find({ quantity: { $gt: 0 } })
-      .limit(10)
+      .limit(8)
       .toArray();
 
     return { props: { products: JSON.parse(JSON.stringify(products)) } };
