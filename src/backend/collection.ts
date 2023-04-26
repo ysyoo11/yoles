@@ -10,7 +10,7 @@ const dbOptions = {
 
 export const collection = {
   products: async () =>
-    (await connectMongo(dbOptions)).db.collection<Product[]>('products'),
+    (await connectMongo(dbOptions)).db.collection<Product>('products'),
 };
 
 export async function connectYolesMongo() {

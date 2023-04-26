@@ -42,3 +42,7 @@ export interface Product {
   quantity: number;
   image: string;
 }
+
+export type PostProduct = Omit<Product, '_id'>;
+
+export type PostProductResponse = Pick<Product, '_id'>;
