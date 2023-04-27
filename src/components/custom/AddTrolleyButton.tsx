@@ -10,7 +10,6 @@ import { Product } from '@/backend/product/model';
 import { useYolesStore } from '@/components/yoles-context';
 import { useAssertiveStore } from '@/context/assertives';
 import { MAX_PURCHASE_QUANTITY } from '@/defines/policy';
-import { isMobile } from '@/utils/bowser';
 
 interface Props {
   product: Product;
@@ -82,22 +81,9 @@ export default function AddTrolleyButton({
   }, [quantity]);
 
   return (
-    <div
-      className={clsx('relative my-6', {
-        'h-24': isMobile(),
-        'h-[44px]': !isMobile(),
-      })}
-    >
+    <div className='relative my-6 h-24 sm:h-[44px]'>
       {quantitySelectMode ? (
-        <div
-          className={clsx(
-            'relative flex items-center justify-between md:max-w-xs',
-            {
-              'flex-col space-x-0 space-y-1': isMobile(),
-              'flex-row space-x-2 space-y-0': !isMobile(),
-            }
-          )}
-        >
+        <div className='relative flex flex-col items-center justify-between space-x-0 space-y-1 sm:flex-row sm:space-x-2 sm:space-y-0 md:max-w-xs'>
           <div
             className={clsx(
               'flex w-full items-center justify-between rounded-full border bg-white p-1.5 md:max-w-xs'
@@ -139,12 +125,7 @@ export default function AddTrolleyButton({
             </button>
           </div>
           <button
-            className={clsx(
-              'rounded-lg bg-yoles py-2 px-4 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300',
-              {
-                'w-full': isMobile(),
-              }
-            )}
+            className='w-full rounded-lg bg-yoles py-2 px-4 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300 sm:w-auto'
             disabled={quantity < 1}
             onClick={(e) => {
               e.stopPropagation();
