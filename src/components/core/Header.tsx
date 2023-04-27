@@ -23,8 +23,8 @@ export default function Header() {
     <>
       <header className='sticky top-0 z-[1] w-full bg-white shadow'>
         <div className='mx-auto flex max-w-xl items-center justify-between space-x-10 px-6 py-2 sm:max-w-7xl'>
-          <div className='flex items-center space-x-4 md:space-x-0'>
-            <button onClick={() => setShowModal('menu')} className='md:hidden'>
+          <div className='flex items-center space-x-4'>
+            <button onClick={() => setShowModal('menu')}>
               <Bars3Icon className='h-6 w-6' />
             </button>
             <button onClick={() => router.push('/')}>
