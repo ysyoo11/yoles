@@ -12,7 +12,10 @@ import {
 } from 'react';
 
 import { Product } from '@/backend/product/model';
-import { SEARCH_HISTORY_KEY } from '@/constant/local-storage-key';
+import {
+  SAVED_TROLLEY,
+  SEARCH_HISTORY_KEY,
+} from '@/constant/local-storage-key';
 
 export type YolesState = {
   searchHistory: string[];
@@ -72,11 +75,22 @@ export function YolesProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    const storedValue = window.localStorage.getItem(SAVED_TROLLEY);
+    storedValue
+      ? setTrolleyItems(JSON.parse(storedValue))
+      : setTrolleyItems([]);
+  }, []);
+
+  useEffect(() => {
     window.localStorage.setItem(
       SEARCH_HISTORY_KEY,
       JSON.stringify(state.searchHistory)
     );
   }, [state.searchHistory]);
+
+  useEffect(() => {
+    window.localStorage.setItem(SAVED_TROLLEY, JSON.stringify(trolleyItems));
+  }, [trolleyItems]);
 
   const value = useMemo<YolesStore>(
     () => ({
