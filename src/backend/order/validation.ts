@@ -29,7 +29,7 @@ export async function validatePostOrder(params: Params): Promise<PostOrder> {
           main: z.enum([mainCategories[0], ...mainCategories.slice(1)]),
           sub: z.enum([subCategories[0], ...subCategories.slice(1)]),
         }),
-        price: z.number().max(100),
+        price: z.number(),
         name: z.string().min(1).max(100),
         details: z.string().min(1).max(800),
         quantity: z.number().max(200),

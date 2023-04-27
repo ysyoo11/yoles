@@ -2,7 +2,7 @@ import { Product } from '@/backend/product/model';
 
 export const states = ['NSW', 'VIC', 'QLD', 'WA', 'SA', 'TAS'] as const;
 
-type State = (typeof states)[number];
+export type State = (typeof states)[number];
 
 export interface Order {
   _id: OurId;
