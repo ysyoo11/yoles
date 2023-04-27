@@ -18,11 +18,24 @@ const handler: MyHandler = async (req, res) => {
     const postOrder = await validatePostOrder(req.body);
 
     // Logic
-    const col = await collection.orders();
+    const orderCol = await collection.orders();
+    const productCol = await collection.products();
 
     const _id = new ObjectId();
     const createdAt = new Date();
-    const result = await col.insertOne({ _id, createdAt, ...postOrder });
+    const result = await orderCol.insertOne({ _id, createdAt, ...postOrder });
+
+    postOrder.items.forEach(async (item) => {
+      await productCol
+        .updateOne({ name: item.name }, { $inc: { quantity: -item.quantity } })
+        .catch((e) => {
+          console.error(e);
+          throw new ApiError(
+            'INTERNAL_SERVER_ERROR',
+            'MongoDB service not available - could not update product quantity.'
+          );
+        });
+    });
 
     if (!result.acknowledged) {
       throw new ApiError(
