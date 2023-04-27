@@ -41,7 +41,13 @@ export default function ShoppingLayout({
       <aside className='inset-y-0 overflow-y-auto border-b px-4 pb-4 lg:fixed lg:mt-20 lg:h-screen lg:w-80 lg:border-r lg:px-4 lg:pt-14'>
         <div className='flex flex-col lg:flex-col-reverse lg:px-4'>
           <button
-            onClick={() => router.push('/products')}
+            onClick={() => {
+              if (pageType === 'sub') {
+                router.push(`/products/${router.query.category}`);
+              } else {
+                router.push('/products');
+              }
+            }}
             className='mb-6 flex items-center space-x-2 text-red-500 underline hover:no-underline lg:mt-10'
           >
             <ChevronLeftIcon className='h-4 w-4 stroke-[3px]' />
