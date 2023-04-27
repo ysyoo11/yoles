@@ -33,7 +33,7 @@ export default function ProductDetailPage() {
   }, [getProductInfo]);
 
   return (
-    <section className='relative mx-auto h-[2000px] w-full max-w-7xl px-4 py-6'>
+    <section className='relative mx-auto w-full max-w-7xl px-4 py-6'>
       <button
         className='flex items-center space-x-2 text-yoles underline hover:no-underline'
         onClick={() => router.back()}

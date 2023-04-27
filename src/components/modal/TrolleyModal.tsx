@@ -6,13 +6,17 @@ import {
 } from '@heroicons/react/24/outline';
 import NextImage from 'next/image';
 import Link from 'next/link';
-import { Fragment, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 
+import { validatePostOrder } from '@/backend/order/validation';
 import Input from '@/components/ui/Input';
 import { useYolesStore } from '@/components/yoles-context';
 import { useAssertiveStore } from '@/context/assertives';
 import { MAX_PURCHASE_QUANTITY } from '@/defines/policy';
+import placeOrder from '@/lib/place-order';
 import displayPrice from '@/utils/display-price';
+
+import type { State } from '@/backend/order/model';
 
 interface Props {
   isOpen: boolean;
@@ -22,7 +26,7 @@ interface Props {
 type UserInfo = {
   address: string;
   suburb: string;
-  state: string;
+  state: State;
   postcode: string;
   firstName: string;
   lastName: string;
@@ -30,10 +34,10 @@ type UserInfo = {
   phone: string;
 };
 
-const initialUserInfo = {
+const initialUserInfo: UserInfo = {
   address: '',
   suburb: '',
-  state: '',
+  state: 'NSW',
   postcode: '',
   firstName: '',
   lastName: '',
@@ -46,8 +50,9 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
     'trolley'
   );
   const [userInfo, setUserInfo] = useState<UserInfo>(initialUserInfo);
+  const [loading, setLoading] = useState(false);
 
-  const { showNoti } = useAssertiveStore();
+  const { showNoti, showAlert } = useAssertiveStore();
   const { trolleyItems, setTrolleyItems, total } = useYolesStore();
 
   const { showModal } = useAssertiveStore();
@@ -56,6 +61,43 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
     onClose();
     setPage('trolley');
   };
+
+  const initializeTrolley = useCallback(() => {
+    setPage('trolley');
+    setUserInfo(initialUserInfo);
+    setTrolleyItems([]);
+  }, [setTrolleyItems]);
+
+  const validateUserInfo = useCallback(async () => {
+    setLoading(true);
+    await validatePostOrder({
+      userInfo,
+      items: trolleyItems,
+    })
+      .then(() => setPage('confirm'))
+      .catch((e) => {
+        console.error(e);
+        showAlert(e);
+      })
+      .finally(() => setLoading(false));
+  }, [showAlert, trolleyItems, userInfo]);
+
+  const orderItems = useCallback(async () => {
+    setLoading(true);
+    await placeOrder({ userInfo, items: trolleyItems })
+      .then(() => {
+        onClose();
+        showNoti({
+          title: 'Your order has been successfully proceeded!',
+        });
+        initializeTrolley();
+      })
+      .catch((e) => {
+        console.error(e);
+        showAlert(e);
+      })
+      .finally(() => setLoading(false));
+  }, [onClose, showAlert, showNoti, trolleyItems, userInfo, initializeTrolley]);
 
   return (
     <Transition show={isOpen} as={Fragment}>
@@ -282,6 +324,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                             }}
                             value={userInfo.suburb}
                           />
+                          {/* TODO: Change it to dropdown component */}
                           <Input
                             label='State'
                             className='w-full'
@@ -289,7 +332,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                             onChange={(e) => {
                               setUserInfo((prev) => ({
                                 ...prev,
-                                state: e.target.value,
+                                state: e.target.value as State,
                               }));
                             }}
                             value={userInfo.state}
@@ -466,8 +509,10 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                     <div className='px-6 py-4'>
                       <button
                         className='w-full rounded-full bg-yoles py-3 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300'
-                        disabled={Object.values(userInfo).includes('')}
-                        onClick={() => setPage('confirm')}
+                        disabled={
+                          Object.values(userInfo).includes('') || loading
+                        }
+                        onClick={validateUserInfo}
                       >
                         Continue
                       </button>
@@ -477,13 +522,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                     <div className='px-6 py-4'>
                       <button
                         className='w-full rounded-full bg-yoles py-3 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300'
-                        onClick={() =>
-                          // TODO:
-                          showNoti({
-                            title: 'Work in progress 🛠',
-                            variant: 'alert',
-                          })
-                        }
+                        onClick={orderItems}
                       >
                         Place order
                       </button>
