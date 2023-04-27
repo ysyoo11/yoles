@@ -76,9 +76,17 @@ export function YolesProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const storedValue = window.localStorage.getItem(SAVED_TROLLEY);
-    storedValue
-      ? setTrolleyItems(JSON.parse(storedValue))
-      : setTrolleyItems([]);
+    if (storedValue) {
+      const parsedValue = JSON.parse(storedValue) as Array<Product>;
+      const parsedItems = parsedValue.map((item) => ({
+        ...item,
+        price: +item.price,
+        quantity: +item.quantity,
+      }));
+      setTrolleyItems(parsedItems);
+      return;
+    }
+    setTrolleyItems([]);
   }, []);
 
   useEffect(() => {
