@@ -3,12 +3,14 @@ import {
   PlusIcon,
   ShoppingCartIcon,
 } from '@heroicons/react/24/outline';
+import clsx from 'clsx';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Product } from '@/backend/product/model';
 import { useYolesStore } from '@/components/yoles-context';
 import { useAssertiveStore } from '@/context/assertives';
 import { MAX_PURCHASE_QUANTITY } from '@/defines/policy';
+import { isMobile } from '@/utils/bowser';
 
 interface Props {
   product: Product;
@@ -80,10 +82,27 @@ export default function AddTrolleyButton({
   }, [quantity]);
 
   return (
-    <>
+    <div
+      className={clsx('relative my-6', {
+        'h-24': isMobile(),
+        'h-[44px]': !isMobile(),
+      })}
+    >
       {quantitySelectMode ? (
-        <div className='flex items-center justify-between space-x-2 md:max-w-xs'>
-          <div className='my-6 flex w-full items-center justify-between rounded-full border bg-white p-1.5 md:max-w-xs'>
+        <div
+          className={clsx(
+            'relative flex items-center justify-between md:max-w-xs',
+            {
+              'flex-col space-x-0 space-y-1': isMobile(),
+              'flex-row space-x-2 space-y-0': !isMobile(),
+            }
+          )}
+        >
+          <div
+            className={clsx(
+              'flex w-full items-center justify-between rounded-full border bg-white p-1.5 md:max-w-xs'
+            )}
+          >
             <button
               className='rounded-full bg-black p-1 disabled:cursor-not-allowed disabled:bg-gray-200'
               onClick={(e) => {
@@ -120,7 +139,12 @@ export default function AddTrolleyButton({
             </button>
           </div>
           <button
-            className='rounded-lg bg-yoles py-2 px-4 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300'
+            className={clsx(
+              'rounded-lg bg-yoles py-2 px-4 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300',
+              {
+                'w-full': isMobile(),
+              }
+            )}
             disabled={quantity < 1}
             onClick={(e) => {
               e.stopPropagation();
@@ -137,7 +161,7 @@ export default function AddTrolleyButton({
             e.stopPropagation();
             setQuantitySelectMode(true);
           }}
-          className='my-6 flex w-full items-center justify-center space-x-2 rounded-full bg-yoles py-3 text-sm text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300 md:max-w-xs'
+          className='flex w-full items-center justify-center space-x-2 rounded-full bg-yoles py-3 text-sm text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300 md:max-w-xs'
           disabled={product.quantity === 0}
         >
           <ShoppingCartIcon className='h-5 w-5 stroke-2' />
@@ -146,6 +170,6 @@ export default function AddTrolleyButton({
           </span>
         </button>
       )}
-    </>
+    </div>
   );
 }

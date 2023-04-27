@@ -1,7 +1,9 @@
+import clsx from 'clsx';
 import NextImage from 'next/image';
 import { useRouter } from 'next/router';
 
 import { Product } from '@/backend/product/model';
+import { isMobile } from '@/utils/bowser';
 import displayPrice from '@/utils/display-price';
 
 import AddTrolleyButton from './AddTrolleyButton';
@@ -30,7 +32,11 @@ export default function ProductCard({ product }: Props) {
           blurDataURL={image}
         />
       </div>
-      <p className='mb-4 h-full max-h-[60px] w-full font-medium line-clamp-2'>
+      <p
+        className={clsx('mb-4 max-h-[60px] w-full font-medium line-clamp-2', {
+          'h-full': !isMobile(),
+        })}
+      >
         {name}
       </p>
       <span className='text-xl font-semibold'>{displayPrice(price)}</span>

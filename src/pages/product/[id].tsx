@@ -70,7 +70,7 @@ export default function ProductDetailPage() {
               className='mt-2 md:mt-4 md:text-base'
             />
             <AddTrolleyButton product={product} isProductDetailPage />
-            <div className='md:hidden'>
+            <div className='mt-6 md:hidden'>
               <h6 className='text-2xl font-medium'>Product details</h6>
               <p className='mt-4 text-gray-700'>{product.details}</p>
             </div>
