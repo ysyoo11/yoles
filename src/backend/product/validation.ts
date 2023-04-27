@@ -13,9 +13,12 @@ import { Params } from 'types';
 
 import type { PostProduct } from './model';
 
-const mainCategories = [...menu.map((item) => item.category)] as const;
+export const mainCategories = [...menu.map((item) => item.category)] as const;
+export const subCategories = [
+  ...menu.map((item) => item.subCategory.map((i) => i.name)).flat(),
+] as const;
 
-const sortSubCategory = (main: (typeof mainCategories)[number]) => {
+export const sortSubCategory = (main: (typeof mainCategories)[number]) => {
   switch (main) {
     case 'bakery':
       return bakerySubCategories;

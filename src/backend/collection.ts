@@ -1,6 +1,7 @@
 import { ENV } from '@/utils/env';
 import { connectMongo } from 'sdk/mongo';
 
+import type { Order } from './order/model';
 import type { Product } from './product/model';
 
 const dbOptions = {
@@ -11,6 +12,8 @@ const dbOptions = {
 export const collection = {
   products: async () =>
     (await connectMongo(dbOptions)).db.collection<Product>('products'),
+  orders: async () =>
+    (await connectMongo(dbOptions)).db.collection<Order>('order'),
 };
 
 export async function connectYolesMongo() {
