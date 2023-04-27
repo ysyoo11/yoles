@@ -523,6 +523,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                       <button
                         className='w-full rounded-full bg-yoles py-3 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-gray-300'
                         onClick={orderItems}
+                        disabled={loading}
                       >
                         Place order
                       </button>

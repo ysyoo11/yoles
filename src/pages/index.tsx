@@ -144,7 +144,7 @@ export default function HomePage({ products }: Props) {
               key={`hero-slide-${idx}`}
               className='keen-slider__slide bg-zinc-800'
             >
-              <div className='md:mx-auto md:flex  md:max-w-7xl md:flex-row-reverse'>
+              <div className='md:mx-auto md:flex md:max-w-7xl md:flex-row-reverse'>
                 <div
                   className='h-[500px] w-full bg-cover bg-center bg-no-repeat md:h-[24rem] lg:h-[30rem]'
                   style={{

@@ -51,7 +51,7 @@ export default function AddTrolleyButton({
       setTrolleyItems((prev) =>
         prev.map((item) =>
           item._id === product._id
-            ? { ...item, quantity: item.quantity + quantity }
+            ? { ...item, quantity: +item.quantity + +quantity }
             : item
         )
       );
