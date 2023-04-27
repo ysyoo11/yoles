@@ -30,7 +30,7 @@ export default function ProductCard({ product }: Props) {
           blurDataURL={image}
         />
       </div>
-      <p className='mb-4 h-full max-h-[60px] w-full font-medium line-clamp-2 sm:h-auto'>
+      <p className='mb-4 max-h-[60px] w-full font-medium line-clamp-2 sm:h-full'>
         {name}
       </p>
       <span className='text-xl font-semibold'>{displayPrice(price)}</span>

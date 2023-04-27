@@ -3,7 +3,6 @@ import {
   PlusIcon,
   ShoppingCartIcon,
 } from '@heroicons/react/24/outline';
-import clsx from 'clsx';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Product } from '@/backend/product/model';
@@ -85,9 +84,8 @@ export default function AddTrolleyButton({
       {quantitySelectMode ? (
         <div className='relative flex flex-col items-center justify-between space-x-0 space-y-1 sm:flex-row sm:space-x-2 sm:space-y-0 md:max-w-xs'>
           <div
-            className={clsx(
-              'flex w-full items-center justify-between rounded-full border bg-white p-1.5 md:max-w-xs'
-            )}
+            onClick={(e) => e.stopPropagation()}
+            className='flex w-full cursor-default items-center justify-between rounded-full border bg-white p-1.5 md:max-w-xs'
           >
             <button
               className='rounded-full bg-black p-1 disabled:cursor-not-allowed disabled:bg-gray-200'
