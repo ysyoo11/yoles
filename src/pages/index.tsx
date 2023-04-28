@@ -271,12 +271,12 @@ export default function HomePage({ products }: Props) {
           )}
         </ul>
       </div>
-      <section className='mx-auto flex max-w-7xl flex-col px-4 py-4'>
+      <section className='mx-auto flex max-w-7xl flex-col px-4 pt-4 pb-10'>
         <h6 className='mt-6 text-3xl font-medium md:mt-10'>Shop Items</h6>
         <ProductsDisplay products={products} />
         <button
           onClick={() => router.push('/products')}
-          className='group mt-6 flex items-center space-x-2 self-center text-gray-700 hover:underline md:mt-10'
+          className='group mt-6 flex items-center space-x-2 self-center py-4 text-gray-700 hover:underline md:mt-10'
         >
           <span className='md:text-lg'>See more</span>
           <ArrowRightIcon className='h-5 w-5 stroke-2 transition-transform group-hover:translate-x-1' />
