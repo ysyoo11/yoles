@@ -10,6 +10,7 @@ interface Props {
   showResultNumber?: boolean;
 }
 
+// TODO: Implement infinite scroll
 export default function ProductsDisplay({
   showResultNumber = false,
   products,

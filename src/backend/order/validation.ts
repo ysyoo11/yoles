@@ -1,9 +1,10 @@
 import { z } from 'zod';
 
 import { mainCategories, subCategories } from '@/backend/product/validation';
-import { Params } from 'types';
 
 import { states, type PostOrder } from './model';
+
+import type { Params } from 'types';
 
 export async function validatePostOrder(params: Params): Promise<PostOrder> {
   const schema = z.object({
@@ -16,8 +17,8 @@ export async function validatePostOrder(params: Params): Promise<PostOrder> {
       lastName: z.string().min(1).max(30),
       email: z
         .string()
-        .min(1, { message: 'This field has to filled.' })
-        .email('This is not a valid email.'),
+        .min(1, { message: 'This field has to be filled.' })
+        .email('This is not a valid email address.'),
       phone: z
         .string()
         .min(9, { message: 'Must be a valid phone number' })

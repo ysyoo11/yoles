@@ -7,6 +7,7 @@ import {
 import NextImage from 'next/image';
 import Link from 'next/link';
 import { Fragment, useCallback, useState } from 'react';
+import { ZodError } from 'zod';
 
 import { validatePostOrder } from '@/backend/order/validation';
 import Input from '@/components/ui/Input';
@@ -75,9 +76,9 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
       items: trolleyItems,
     })
       .then(() => setPage('confirm'))
-      .catch((e) => {
+      .catch((e: ZodError) => {
         console.error(e);
-        showAlert(e);
+        showAlert({ name: e.errors[0].code, message: e.errors[0].message });
       })
       .finally(() => setLoading(false));
   }, [showAlert, trolleyItems, userInfo]);
