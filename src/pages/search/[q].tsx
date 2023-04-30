@@ -8,7 +8,7 @@ import ProductsDisplay from '@/components/custom/ProductsDisplay';
 import ShoppingLayout from '@/components/layout/Shopping';
 import { useAssertiveStore } from '@/context/assertives';
 import { SWR_KEY } from '@/defines/swr-keys';
-import { getProducts } from '@/lib/get-products';
+import { searchProducts } from '@/lib/search-products';
 
 export default function SearchPage({ searchText }: { searchText: string }) {
   const [products, setProducts] = useState<Product[] | undefined>(undefined);
@@ -36,7 +36,7 @@ export default function SearchPage({ searchText }: { searchText: string }) {
       `${SWR_KEY.SEARCH}-${searchText}-${priceRange.min}-${priceRange.max}`,
     async () => {
       if (priceRange) {
-        return await getProducts({
+        return await searchProducts({
           q: searchText,
           priceRange,
         })
