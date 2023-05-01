@@ -33,7 +33,7 @@ export async function validatePostOrder(params: Params): Promise<PostOrder> {
         price: z.number(),
         name: z.string().min(1).max(100),
         details: z.string().min(1).max(800),
-        quantity: z.number().max(200),
+        quantity: z.number().max(20),
         image: z.string().max(200),
       })
       .array(),

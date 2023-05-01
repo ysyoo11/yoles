@@ -26,6 +26,13 @@ const handler: MyHandler = async (req, res) => {
     const result = await orderCol.insertOne({ _id, createdAt, ...postOrder });
 
     postOrder.items.forEach(async (item) => {
+      if (
+        (await productCol.find({ name: item.name }).toArray())[0].quantity -
+          item.quantity <
+        0
+      ) {
+        throw new ApiError('VALIDATION_ERROR', 'Item quantity exceeds stock.');
+      }
       await productCol
         .updateOne({ name: item.name }, { $inc: { quantity: -item.quantity } })
         .catch((e) => {
