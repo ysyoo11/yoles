@@ -4,17 +4,25 @@ import { PRODUCTS_FETCH_LENGTH } from '@/defines/policy';
 import { fetcher } from './fetcher';
 
 interface Props {
-  main?: string;
-  sub?: string;
+  q: string;
+  priceRange?: {
+    min: string | undefined;
+    max: string | undefined;
+  };
   size: number;
 }
 
-export async function getProducts({ main, sub, size }: Props) {
+export async function searchProducts({
+  q,
+  priceRange = { min: '0', max: '100' },
+  size,
+}: Props) {
   return await fetcher
-    .get('/api/products', {
+    .get('/api/search', {
       searchParams: {
-        main: main ? main : '',
-        sub: sub ? sub : '',
+        q,
+        minPrice: priceRange.min ?? '0',
+        maxPrice: priceRange.max ?? '100',
         limit: PRODUCTS_FETCH_LENGTH,
         skip: (size - 1) * PRODUCTS_FETCH_LENGTH,
       },

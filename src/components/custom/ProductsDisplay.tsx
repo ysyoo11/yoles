@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router';
+
 import ProductCardSkeleton from '@/components/skeleton/ProductCardSkeleton';
 import SkeletonBox from '@/components/skeleton/SkeletonBox';
 
@@ -8,26 +10,37 @@ import type { Product } from '@/backend/product/model';
 interface Props {
   products: Product[] | undefined;
   showResultNumber?: boolean;
+  total?: number;
 }
 
-// TODO: Implement infinite scroll
 export default function ProductsDisplay({
   showResultNumber = false,
   products,
+  total,
 }: Props) {
+  const router = useRouter();
+
+  if (router.query.q && products && products.length === 0) {
+    return (
+      <p className='py-20 text-center text-lg md:text-2xl'>
+        Could not find any results 😕
+      </p>
+    );
+  }
+
   return (
     <>
       {showResultNumber && (
         <>
-          {products ? (
-            <p className='text-xs text-gray-400'>{products.length} results</p>
+          {total ? (
+            <p className='text-xs text-gray-400'>{total} results</p>
           ) : (
             <SkeletonBox height={16} width={64} />
           )}
         </>
       )}
       <div className='mt-10 grid w-full grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4'>
-        {products ? (
+        {products && products.length > 0 ? (
           <>
             {products.map((item, idx) => (
               <ProductCard key={`product-${idx}`} product={item} />
@@ -35,7 +48,7 @@ export default function ProductsDisplay({
           </>
         ) : (
           <>
-            {Array.from(Array(10).keys()).map((i) => (
+            {Array.from(Array(12).keys()).map((i) => (
               <ProductCardSkeleton key={`product-card-skeleton-${i}`} />
             ))}
           </>

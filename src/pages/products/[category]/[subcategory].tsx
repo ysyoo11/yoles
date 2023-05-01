@@ -1,8 +1,12 @@
 import { GetStaticPaths, GetStaticPropsContext } from 'next';
+import { InView } from 'react-intersection-observer';
 
+import { collection } from '@/backend/collection';
+import Loading from '@/components/core/Loading';
 import ProductsDisplay from '@/components/custom/ProductsDisplay';
 import ShoppingLayout from '@/components/layout/Shopping';
-import useProducts from '@/hooks/use-products';
+import { PRODUCTS_FETCH_LENGTH } from '@/defines/policy';
+import useInfiniteProducts from '@/hooks/use-infinite-products';
 import menu from 'public/menu.json';
 
 interface Props {
@@ -10,15 +14,36 @@ interface Props {
     main: string;
     sub: string;
   };
+  totalProducts: number;
 }
 
-export default function SubCategorizedProductPage({ category }: Props) {
-  const { products } = useProducts();
+export default function SubCategorizedProductPage({
+  category,
+  totalProducts,
+}: Props) {
+  const { products, isLoading, setSize, size } = useInfiniteProducts();
 
   return (
     <ShoppingLayout pageType='sub' category={category}>
       <section className='w-full p-4 lg:ml-80'>
-        <ProductsDisplay products={products} showResultNumber />
+        <ProductsDisplay
+          total={totalProducts}
+          products={products}
+          showResultNumber
+        />
+
+        {isLoading && <Loading className='w-full' />}
+
+        {products && products.length >= size * PRODUCTS_FETCH_LENGTH && (
+          <InView
+            as='div'
+            className='flex w-full items-center justify-center py-4'
+            rootMargin='24px'
+            onChange={(inView) => {
+              if (inView) setSize((prev) => prev + 1);
+            }}
+          />
+        )}
       </section>
     </ShoppingLayout>
   );
@@ -59,9 +84,24 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       .title,
   };
 
-  return {
-    props: {
-      category,
-    },
-  };
+  try {
+    const col = await collection.products();
+    const totalProducts = (
+      await col.find({ category: { main, sub } }).toArray()
+    ).length;
+    return {
+      props: {
+        category,
+        totalProducts,
+      },
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      props: {
+        category,
+        totalProducts: 0,
+      },
+    };
+  }
 }

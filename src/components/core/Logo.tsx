@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import Link from 'next/link';
 
 interface Props {
   className?: string;
@@ -6,13 +7,15 @@ interface Props {
 
 export default function Logo({ className }: Props) {
   return (
-    <span
-      className={clsx(
-        'text-3xl font-semibold text-yoles md:text-4xl',
-        className
-      )}
-    >
-      yoles
-    </span>
+    <Link href='/'>
+      <span
+        className={clsx(
+          'text-3xl font-semibold text-yoles md:text-4xl',
+          className
+        )}
+      >
+        yoles
+      </span>
+    </Link>
   );
 }
