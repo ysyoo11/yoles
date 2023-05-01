@@ -31,20 +31,20 @@ export default function SubCategorizedProductPage({
           products={products}
           showResultNumber
         />
+
+        {isLoading && <Loading className='w-full' />}
+
+        {products && products.length >= size * PRODUCTS_FETCH_LENGTH && (
+          <InView
+            as='div'
+            className='flex w-full items-center justify-center py-4'
+            rootMargin='24px'
+            onChange={(inView) => {
+              if (inView) setSize((prev) => prev + 1);
+            }}
+          />
+        )}
       </section>
-
-      {isLoading && <Loading className='w-full' />}
-
-      {products && products.length >= size * PRODUCTS_FETCH_LENGTH && (
-        <InView
-          as='div'
-          className='flex w-full items-center justify-center py-4'
-          rootMargin='24px'
-          onChange={(inView) => {
-            if (inView) setSize((prev) => prev + 1);
-          }}
-        />
-      )}
     </ShoppingLayout>
   );
 }
