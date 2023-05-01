@@ -1,1 +1,2 @@
 export const MAX_PURCHASE_QUANTITY = 20;
+export const PRODUCTS_FETCH_LENGTH = 12;

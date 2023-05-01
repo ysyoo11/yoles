@@ -1,58 +1,78 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
-import useSWRImmutable from 'swr/immutable';
+import { useEffect, useState } from 'react';
+import { InView } from 'react-intersection-observer';
+import useSWRInfinite from 'swr/infinite';
 
 import { Product } from '@/backend/product/model';
+import Loading from '@/components/core/Loading';
 import ProductsDisplay from '@/components/custom/ProductsDisplay';
 import ShoppingLayout from '@/components/layout/Shopping';
 import { useAssertiveStore } from '@/context/assertives';
+import { PRODUCTS_FETCH_LENGTH } from '@/defines/policy';
 import { SWR_KEY } from '@/defines/swr-keys';
 import { searchProducts } from '@/lib/search-products';
 
 export default function SearchPage({ searchText }: { searchText: string }) {
   const [products, setProducts] = useState<Product[] | undefined>(undefined);
   const router = useRouter();
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const { showAlert } = useAssertiveStore();
 
-  const priceRange = useMemo(() => {
-    if (router.query.minPrice && router.query.maxPrice) {
-      const min = router.query.minPrice as string;
-      const max = router.query.maxPrice as string;
-      return {
-        min,
-        max,
-      };
-    }
-    return {
-      min: '0',
-      max: '100',
-    };
-  }, [router.query.minPrice, router.query.maxPrice]);
-
-  const { data, error, isLoading } = useSWRImmutable(
-    priceRange &&
-      `${SWR_KEY.SEARCH}-${searchText}-${priceRange.min}-${priceRange.max}`,
+  const { data, size, setSize } = useSWRInfinite(
+    (index) =>
+      `${SWR_KEY.SEARCH}-${searchText}-${router.query.minPrice}-${router.query.maxPrice}-${index}`,
     async () => {
-      if (priceRange) {
-        return await searchProducts({
-          q: searchText,
-          priceRange,
-        })
-          .then((data) => setProducts(data))
-          .catch(showAlert);
-      }
+      setLoading(true);
+      const data = await searchProducts({
+        q: searchText,
+        priceRange: {
+          min: router.query.minPrice as string,
+          max: router.query.maxPrice as string,
+        },
+        // FIXME: Make better solution
+        page: router.query.minPrice || router.query.maxPrice ? page - 1 : page,
+      });
+      setLoading(false);
+      return data;
     },
     {
-      shouldRetryOnError: false,
+      revalidateFirstPage: false,
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
     }
   );
+
+  useEffect(() => {
+    if (data) {
+      setProducts(data.flat());
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setPage(size);
+  }, [size]);
 
   return (
     <ShoppingLayout pageType='search' searchText={searchText}>
       <section className='w-full p-4 lg:ml-80'>
         <ProductsDisplay products={products} showResultNumber />
+
+        {loading && <Loading className='w-full' />}
+
+        {products && products.length >= size * PRODUCTS_FETCH_LENGTH && (
+          <InView
+            as='div'
+            className='flex w-full items-center justify-center py-4'
+            rootMargin='24px'
+            onChange={(inView) => {
+              if (inView) setSize((prev) => prev + 1);
+            }}
+          />
+        )}
       </section>
     </ShoppingLayout>
   );

@@ -5,10 +5,21 @@ import { collection } from '@/backend/collection';
 
 const handler: MyHandler = async (req, res) => {
   if (req.method === 'GET') {
+    const {
+      q: query,
+      minPrice,
+      maxPrice,
+      skip,
+      limit,
+    } = req.query as {
+      q: string;
+      minPrice: string;
+      maxPrice: string;
+      skip: string;
+      limit: string;
+    };
+
     const col = await collection.products();
-    const query = req.query.q as string;
-    const minPrice = req.query.minPrice as string;
-    const maxPrice = req.query.maxPrice as string;
 
     let products;
     if (query === '') {
@@ -19,6 +30,8 @@ const handler: MyHandler = async (req, res) => {
           name: { $regex: query, $options: 'i' },
           price: { $gte: +minPrice, $lte: +maxPrice },
         })
+        .skip(+skip)
+        .limit(+limit)
         .toArray();
     }
 

@@ -10,7 +10,7 @@ import type { PostProductResponse } from '@/backend/product/model';
 
 const handler: MyHandler = async (req, res) => {
   if (req.method === 'GET') {
-    const { main, sub } = req.query;
+    const { main, sub, skip, limit } = req.query;
     const col = await collection.products();
 
     let products;
@@ -21,8 +21,13 @@ const handler: MyHandler = async (req, res) => {
         .find({ category: { main: main, sub: sub } })
         .toArray();
     } else {
-      products = await col.find({ 'category.main': main }).toArray();
+      products = await col
+        .find({ 'category.main': main })
+        .skip(+skip!)
+        .limit(+limit!)
+        .toArray();
     }
+
     return res.status(StatusCodes.OK).json(products);
   }
   if (req.method === 'POST') {
