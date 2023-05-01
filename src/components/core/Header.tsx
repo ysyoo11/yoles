@@ -1,5 +1,4 @@
 import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 
 import SearchBar from '@/components/custom/SearchBar';
@@ -15,8 +14,6 @@ type ModalType = 'menu' | 'search' | 'trolley';
 export default function Header() {
   const [showModal, setShowModal] = useState<ModalType | null>(null);
 
-  const router = useRouter();
-
   const closeModal = useCallback(() => setShowModal(null), []);
 
   return (
@@ -27,9 +24,7 @@ export default function Header() {
             <button onClick={() => setShowModal('menu')}>
               <Bars3Icon className='h-6 w-6' />
             </button>
-            <button onClick={() => router.push('/')}>
-              <Logo />
-            </button>
+            <Logo />
           </div>
           <SearchBar
             className='hidden md:flex md:max-w-xl'
