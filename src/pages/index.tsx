@@ -337,11 +337,19 @@ export const getStaticProps: GetStaticProps = async () => {
       .limit(8)
       .toArray();
 
-    return { props: { products: JSON.parse(JSON.stringify(products)) } };
+    const productsArr = JSON.parse(JSON.stringify(products)) as Array<Product>;
+    const refinedProducts = productsArr.map((item) => ({
+      ...item,
+      price: +item.price,
+      quantity: +item.quantity,
+    }));
+
+    return { props: { products: refinedProducts }, revalidate: 10 };
   } catch (e) {
     console.error(e);
     return {
       props: { products: [] },
+      revalidate: 10,
     };
   }
 };
