@@ -8,7 +8,6 @@ import { Product } from '@/backend/product/model';
 import Loading from '@/components/core/Loading';
 import ProductsDisplay from '@/components/custom/ProductsDisplay';
 import ShoppingLayout from '@/components/layout/Shopping';
-import { useAssertiveStore } from '@/context/assertives';
 import { PRODUCTS_FETCH_LENGTH } from '@/defines/policy';
 import { SWR_KEY } from '@/defines/swr-keys';
 import { searchProducts } from '@/lib/search-products';
@@ -16,12 +15,9 @@ import { searchProducts } from '@/lib/search-products';
 export default function SearchPage({ searchText }: { searchText: string }) {
   const [products, setProducts] = useState<Product[] | undefined>(undefined);
   const router = useRouter();
-  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const { showAlert } = useAssertiveStore();
-
-  const { data, size, setSize } = useSWRInfinite(
+  const { data, size, setSize } = useSWRInfinite<any>(
     (index) =>
       `${SWR_KEY.SEARCH}-${searchText}-${router.query.minPrice}-${router.query.maxPrice}-${index}`,
     async () => {
@@ -32,8 +28,7 @@ export default function SearchPage({ searchText }: { searchText: string }) {
           min: router.query.minPrice as string,
           max: router.query.maxPrice as string,
         },
-        // FIXME: Make better solution
-        page: router.query.minPrice || router.query.maxPrice ? page - 1 : page,
+        size,
       });
       setLoading(false);
       return data;
@@ -52,14 +47,10 @@ export default function SearchPage({ searchText }: { searchText: string }) {
     }
   }, [data]);
 
-  useEffect(() => {
-    setPage(size);
-  }, [size]);
-
   return (
     <ShoppingLayout pageType='search' searchText={searchText}>
       <section className='w-full p-4 lg:ml-80'>
-        <ProductsDisplay products={products} showResultNumber />
+        <ProductsDisplay products={products} />
 
         {loading && <Loading className='w-full' />}
 
@@ -82,7 +73,7 @@ export const getStaticPaths: GetStaticPaths = () => {
   return { paths: [], fallback: 'blocking' };
 };
 
-export const getStaticProps: GetStaticProps = ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (params) {
     const searchText = params.q;
     return { props: { searchText } };

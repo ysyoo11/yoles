@@ -6,17 +6,17 @@ import { fetcher } from './fetcher';
 interface Props {
   main?: string;
   sub?: string;
-  page: number;
+  size: number;
 }
 
-export async function getProducts({ main, sub, page }: Props) {
+export async function getProducts({ main, sub, size }: Props) {
   return await fetcher
     .get('/api/products', {
       searchParams: {
         main: main ? main : '',
         sub: sub ? sub : '',
         limit: PRODUCTS_FETCH_LENGTH,
-        skip: page * PRODUCTS_FETCH_LENGTH,
+        skip: (size - 1) * PRODUCTS_FETCH_LENGTH,
       },
     })
     .json<Product[]>();

@@ -9,13 +9,13 @@ interface Props {
     min: string | undefined;
     max: string | undefined;
   };
-  page: number;
+  size: number;
 }
 
 export async function searchProducts({
   q,
   priceRange = { min: '0', max: '100' },
-  page,
+  size,
 }: Props) {
   return await fetcher
     .get('/api/search', {
@@ -24,7 +24,7 @@ export async function searchProducts({
         minPrice: priceRange.min ?? '0',
         maxPrice: priceRange.max ?? '100',
         limit: PRODUCTS_FETCH_LENGTH,
-        skip: page * PRODUCTS_FETCH_LENGTH,
+        skip: (size - 1) * PRODUCTS_FETCH_LENGTH,
       },
     })
     .json<Product[]>();

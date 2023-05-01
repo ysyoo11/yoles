@@ -11,20 +11,19 @@ import type { ApiError } from '@/utils/api-error';
 export default function useInfiniteProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(0);
 
   const router = useRouter();
   const mainCategory = router.query.category as string;
   const subCategory = router.query.subcategory as string;
 
-  const { data, size, setSize, error, mutate } = useSWRInfinite(
+  const { data, size, setSize, error, mutate } = useSWRInfinite<any>(
     (index) => `${SWR_KEY.PRODUCTS}-${mainCategory}-${subCategory}-${index}`,
     async () => {
       setLoading(true);
       const data = await getProducts({
         main: mainCategory,
         sub: subCategory,
-        page,
+        size,
       });
       setLoading(false);
       return data;
@@ -42,10 +41,6 @@ export default function useInfiniteProducts() {
       setProducts(data.flat());
     }
   }, [data]);
-
-  useEffect(() => {
-    setPage(size);
-  }, [size]);
 
   return {
     data,
