@@ -37,8 +37,9 @@ export default function SearchBar({ className, closeModal }: Props) {
         setSearchHistory([searchInput, ...dedupedSearchHistory]);
         return;
       }
-      if (searchHistory.length > 3) {
-        const subtractedSearchHistory = searchHistory.splice(-1);
+      if (searchHistory.length >= 3) {
+        searchHistory.pop();
+        const subtractedSearchHistory = searchHistory;
         setSearchHistory([searchInput, ...subtractedSearchHistory]);
         return;
       }
