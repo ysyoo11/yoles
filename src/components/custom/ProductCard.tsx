@@ -20,7 +20,7 @@ export default function ProductCard({ product }: Props) {
       className='relative flex h-full w-full cursor-pointer flex-col rounded-lg border border-transparent p-4 hover:border-gray-200 hover:shadow-lg'
       onClick={() => router.push(`/product/${_id}`)}
     >
-      <div className='items-ceneter flex w-full justify-center px-2 py-4 md:px-6 md:py-10'>
+      <div className='items-ceneter flex w-full justify-center py-6 md:px-6 md:py-10'>
         <NextImage
           src={image}
           height={200}
