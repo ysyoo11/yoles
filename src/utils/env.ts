@@ -1,4 +1,4 @@
-const [envList] = [
+const envList = [
   'MONGODB_URI',
   'MONGODB_NAME',
   'SENDGRID_API_KEY',

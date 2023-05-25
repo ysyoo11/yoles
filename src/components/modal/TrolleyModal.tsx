@@ -53,10 +53,8 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
   const [userInfo, setUserInfo] = useState<UserInfo>(initialUserInfo);
   const [loading, setLoading] = useState(false);
 
-  const { showNoti, showAlert } = useAssertiveStore();
+  const { showNoti, showAlert, showModal } = useAssertiveStore();
   const { trolleyItems, setTrolleyItems, total } = useYolesStore();
-
-  const { showModal } = useAssertiveStore();
 
   const close = () => {
     onClose();
