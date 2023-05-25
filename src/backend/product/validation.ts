@@ -35,7 +35,7 @@ export const sortSubCategory = (main: (typeof mainCategories)[number]) => {
   }
 };
 
-export async function validatePostContact(
+export async function validatePostProduct(
   params: Params
 ): Promise<PostProduct> {
   const schema = z.object({

@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 
 import { type MyHandler, NextApiBuilder } from '@/backend/api-wrapper';
 import { collection } from '@/backend/collection';
-import { validatePostContact } from '@/backend/product/validation';
+import { validatePostProduct } from '@/backend/product/validation';
 import { ApiError } from '@/utils/api-error';
 
 import type { PostProductResponse } from '@/backend/product/model';
@@ -32,7 +32,7 @@ const handler: MyHandler = async (req, res) => {
   }
   if (req.method === 'POST') {
     // Validation
-    const postProduct = await validatePostContact(req.body);
+    const postProduct = await validatePostProduct(req.body);
 
     // Logic
     const col = await collection.products();
