@@ -6,7 +6,6 @@ import { type MyHandler, NextApiBuilder } from '@/backend/api-wrapper';
 import { collection } from '@/backend/collection';
 import { PostOrderResponse } from '@/backend/order/model';
 import { validatePostOrder } from '@/backend/order/validation';
-import { ApiError } from '@/utils/api-error';
 import { ENV } from '@/utils/env';
 import makeEmailTemplate from '@/utils/makeEmailTemplate';
 
@@ -27,28 +26,28 @@ const handler: MyHandler = async (req, res) => {
 
     postOrder.items.forEach(async (item) => {
       if (
-        (await productCol.find({ name: item.name }).toArray())[0].quantity -
-          item.quantity <
-        0
+        (await productCol.find({ name: item.name }).toArray())[0].quantity <
+        item.quantity
       ) {
-        throw new ApiError('VALIDATION_ERROR', 'Item quantity exceeds stock.');
+        return res
+          .status(StatusCodes.CONFLICT)
+          .json({ message: 'Item quantity exceeds stock.' });
       }
       await productCol
         .updateOne({ name: item.name }, { $inc: { quantity: -item.quantity } })
         .catch((e) => {
           console.error(e);
-          throw new ApiError(
-            'INTERNAL_SERVER_ERROR',
-            'MongoDB service not available - could not update product quantity.'
-          );
+          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message:
+              'MongoDB service not available - could not update product quantity.',
+          });
         });
     });
 
     if (!result.acknowledged) {
-      throw new ApiError(
-        'INTERNAL_SERVER_ERROR',
-        'MongoDB service not available.'
-      );
+      return res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ message: 'MongoDB service not available.' });
     }
 
     await sgMail
