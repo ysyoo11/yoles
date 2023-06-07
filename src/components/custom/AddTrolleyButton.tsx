@@ -51,14 +51,21 @@ export default function AddTrolleyButton({
       setTrolleyItems((prev) =>
         prev.map((item) =>
           item._id === product._id
-            ? { ...item, quantity: +item.quantity + +quantity }
+            ? {
+                ...item,
+                quantity: +item.quantity + +quantity,
+                inStock: availableQty,
+              }
             : item
         )
       );
       setQuantity(DEFAULT_QUANTITY);
       return;
     }
-    setTrolleyItems((prev) => [...prev, { ...product, quantity }]);
+    setTrolleyItems((prev) => [
+      ...prev,
+      { ...product, quantity, inStock: availableQty },
+    ]);
     setQuantity(DEFAULT_QUANTITY);
   }, [
     trolleyItems,

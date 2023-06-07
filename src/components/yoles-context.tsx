@@ -11,7 +11,7 @@ import {
   useState,
 } from 'react';
 
-import { Product } from '@/backend/product/model';
+import { TrolleyProduct } from '@/backend/product/model';
 import {
   SAVED_TROLLEY,
   SEARCH_HISTORY_KEY,
@@ -19,7 +19,7 @@ import {
 
 export type YolesState = {
   searchHistory: string[];
-  trolleyItems: Product[];
+  trolleyItems: TrolleyProduct[];
 };
 
 const initialState: YolesState = {
@@ -29,7 +29,7 @@ const initialState: YolesState = {
 
 type YolesAction =
   | { type: 'SET_SEARCH_HISTORY'; searchHistory: string[] }
-  | { type: 'SET_TROLLEY_ITEMS'; trolleyItems: Product[] };
+  | { type: 'SET_TROLLEY_ITEMS'; trolleyItems: TrolleyProduct[] };
 
 export const YolesContext = createContext<YolesState>(initialState);
 
@@ -44,7 +44,7 @@ const yolesReducer: Reducer<YolesState, YolesAction> = (state, action) => {
 
 type YolesStore = YolesState & {
   setSearchHistory: (searchHistory: string[]) => void;
-  setTrolleyItems: Dispatch<SetStateAction<Product[]>>;
+  setTrolleyItems: Dispatch<SetStateAction<TrolleyProduct[]>>;
   total: {
     quantity: number;
     price: number;
@@ -53,7 +53,7 @@ type YolesStore = YolesState & {
 
 export function YolesProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(yolesReducer, initialState);
-  const [trolleyItems, setTrolleyItems] = useState<Product[]>([]);
+  const [trolleyItems, setTrolleyItems] = useState<TrolleyProduct[]>([]);
 
   const setSearchHistory = (searchHistory: string[]) =>
     dispatch({ type: 'SET_SEARCH_HISTORY', searchHistory });
@@ -77,7 +77,7 @@ export function YolesProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const storedValue = window.localStorage.getItem(SAVED_TROLLEY);
     if (storedValue) {
-      const parsedValue = JSON.parse(storedValue) as Array<Product>;
+      const parsedValue = JSON.parse(storedValue) as Array<TrolleyProduct>;
       const parsedItems = parsedValue.map((item) => ({
         ...item,
         price: +item.price,
