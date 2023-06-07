@@ -13,7 +13,6 @@ import { validatePostOrder } from '@/backend/order/validation';
 import Input from '@/components/ui/Input';
 import { useYolesStore } from '@/components/yoles-context';
 import { useAssertiveStore } from '@/context/assertives';
-import { MAX_PURCHASE_QUANTITY } from '@/defines/policy';
 import placeOrder from '@/lib/place-order';
 import displayPrice from '@/utils/display-price';
 
@@ -217,7 +216,7 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                                           className='rounded-md border border-gray-400 bg-gray-100 px-2 py-1 text-sm'
                                         >
                                           {Array.from(
-                                            Array(MAX_PURCHASE_QUANTITY).keys()
+                                            Array(item.inStock).keys()
                                           ).map((i) => (
                                             <option
                                               key={`quantity-option-${i + 1}`}

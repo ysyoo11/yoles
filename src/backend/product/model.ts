@@ -43,6 +43,10 @@ export interface Product {
   image: string;
 }
 
+export type TrolleyProduct = Product & {
+  inStock: number;
+};
+
 export type PostProduct = Omit<Product, '_id'>;
 
 export type PostProductResponse = Pick<Product, '_id'>;
