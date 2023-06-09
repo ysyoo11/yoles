@@ -41,7 +41,7 @@ export default function ProductDetailPage() {
         <ChevronLeftIcon className='h-4 w-4 stroke-yoles stroke-2' />
         <span className='text-sm'>Back</span>
       </button>
-      {loading && <p>Loading...</p>}
+      {loading && !product && <p>Loading...</p>}
       {product && (
         <div className='flex flex-col md:flex-row'>
           <div className='md:w-1/2'>
