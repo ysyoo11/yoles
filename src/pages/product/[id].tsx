@@ -29,8 +29,9 @@ export default function ProductDetailPage() {
   }, [router.query.id, showAlert]);
 
   useEffect(() => {
+    if (product) return;
     getProductInfo();
-  }, [getProductInfo]);
+  }, [getProductInfo, product]);
 
   return (
     <section className='relative mx-auto w-full max-w-7xl px-4 py-6'>
