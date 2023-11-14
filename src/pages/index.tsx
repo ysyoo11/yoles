@@ -95,8 +95,6 @@ export default function HomePage({ products }: Props) {
                     alt={item.image.alt}
                     width={64}
                     height={64}
-                    placeholder='blur'
-                    blurDataURL={item.image.src}
                   />
                   <span className='w-20 text-sm font-semibold group-hover:underline'>
                     {item.title}

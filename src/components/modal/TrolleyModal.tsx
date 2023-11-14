@@ -182,8 +182,6 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                                         alt={item.name}
                                         width={72}
                                         height={72}
-                                        placeholder='blur'
-                                        blurDataURL={item.image}
                                       />
                                     </Link>
                                     <div className='w-full space-y-2'>
@@ -445,8 +443,6 @@ export default function TrolleyModal({ isOpen, onClose }: Props) {
                                   alt={item.name}
                                   width={72}
                                   height={72}
-                                  placeholder='blur'
-                                  blurDataURL={item.image}
                                 />
                                 <div>
                                   <p className='font-medium line-clamp-2'>

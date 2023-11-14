@@ -52,8 +52,6 @@ export default function ProductDetailPage() {
                 alt={product.name}
                 width={400}
                 height={400}
-                placeholder='blur'
-                blurDataURL={product.image}
               />
             </div>
             <div className='hidden md:block'>

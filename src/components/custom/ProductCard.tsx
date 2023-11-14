@@ -21,14 +21,7 @@ export default function ProductCard({ product }: Props) {
       onClick={() => router.push(`/product/${_id}`)}
     >
       <div className='items-ceneter flex w-full justify-center py-6 md:px-6 md:py-10'>
-        <NextImage
-          src={image}
-          height={200}
-          width={200}
-          alt={name}
-          placeholder='blur'
-          blurDataURL={image}
-        />
+        <NextImage src={image} height={200} width={200} alt={name} />
       </div>
       <p className='mb-4 max-h-[60px] w-full font-medium line-clamp-2 sm:h-full'>
         {name}
