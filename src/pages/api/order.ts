@@ -9,7 +9,7 @@ import { validatePostOrder } from '@/backend/order/validation';
 import { ENV } from '@/utils/env';
 import makeEmailTemplate from '@/utils/makeEmailTemplate';
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
+sgMail.setApiKey(ENV.SENDGRID_API_KEY);
 
 const handler: MyHandler = async (req, res) => {
   if (req.method === 'POST') {
