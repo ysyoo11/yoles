@@ -65,12 +65,15 @@ SENDGRID_SENDER=your_sendgrid_sender
 ```
 yarn dev
 ```
-## Usage (Demo Videos)
+## Usage
 #### Web View
 https://github.com/user-attachments/assets/773d94f4-e56e-4e94-ac79-4f0ad850a060
 #### Mobile View
 https://github.com/user-attachments/assets/83a22a65-b5fc-4918-800b-14e53880c17b
 #### Mobile View - Infinite Scrolling
 https://github.com/user-attachments/assets/c6fc872c-0b02-42af-884d-34bfb54953a6
+#### Order Details Email Sent via Sendgrid API
+<img src="https://github.com/user-attachments/assets/80a3b2ab-1d07-4c6d-aa9c-e54a06cbf637" width="300" />
+
 ## License
 This project is open-source and available under the MIT License.
